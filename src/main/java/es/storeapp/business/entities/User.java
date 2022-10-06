@@ -8,6 +8,12 @@ import javax.persistence.*;
 
 //NEW Code - Fixes SQL Injection Vulnerabilities
 @NamedQueries({
+        //Query to get a User's info from the Database
+        @NamedQuery(name="User.FindByEmail",
+                query="SELECT u FROM User u where u.email = :email"),
+        //Query to check if a User exists
+        @NamedQuery(name="User.CountByEmail",
+                query="SELECT COUNT(u.email) FROM User u WHERE u.email = :email"),
         //Login query, selects by username and password
         @NamedQuery(name="User.LoginQuery",
                 query="SELECT u FROM User u WHERE u.email = :email AND u.password = :password")

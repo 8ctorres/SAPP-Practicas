@@ -8,15 +8,20 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepository extends AbstractRepository<User> {
-    
-    private static final String FIND_USER_BY_EMAIL_QUERY = "SELECT u FROM User u WHERE u.email = ''{0}''";
-    private static final String COUNT_USER_BY_EMAIL_QUERY = "SELECT COUNT(*) FROM User u WHERE u.email = ''{0}''";
+
     //OLD Code - Vulnerable to SQL Injection
+    //private static final String FIND_USER_BY_EMAIL_QUERY = "SELECT u FROM User u WHERE u.email = ''{0}''";
+    //private static final String COUNT_USER_BY_EMAIL_QUERY = "SELECT COUNT(*) FROM User u WHERE u.email = ''{0}''";
     //private static final String LOGIN_QUERY = "SELECT u FROM User u WHERE u.email = ''{0}'' AND u.password = ''{1}''";
 
     public User findByEmail(String email) {
         try {
-            Query query = entityManager.createQuery(MessageFormat.format(FIND_USER_BY_EMAIL_QUERY, email));
+            //OLD Code - Vulnerable to SQL Injection
+            //query = entityManager.createQuery(MessageFormat.format(FIND_USER_BY_EMAIL_QUERY, email));
+            /////////////
+            //NEW Code
+            Query query = entityManager.createNamedQuery("User.FindByEmail", User.class)
+                    .setParameter("email", email);
             return (User) query.getSingleResult();
         } catch (NoResultException e) {
             logger.error(e.getMessage(), e);
@@ -25,7 +30,12 @@ public class UserRepository extends AbstractRepository<User> {
     }
 
     public boolean existsUser(String email) {
-        Query query = entityManager.createQuery(MessageFormat.format(COUNT_USER_BY_EMAIL_QUERY, email));
+        //OLD Code - Vulnerable to SQL Injection
+        //query = entityManager.createQuery(MessageFormat.format(COUNT_USER_BY_EMAIL_QUERY, email));
+        /////////////
+        //NEW Code
+        Query query = entityManager.createNamedQuery("User.CountByEmail", User.class)
+                .setParameter("email", email);
         return ((Long) query.getSingleResult() > 0);
     }
     
