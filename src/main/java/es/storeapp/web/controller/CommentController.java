@@ -71,6 +71,7 @@ public class CommentController {
                                   Locale locale, 
                                   Model model) {
         try {
+            // Línea añadida para escapar los caracteres introducidos en un comentario para de este modo que el texto no sea ejecutable
             commentForm.setText(HtmlUtils.htmlEscape(commentForm.getText()));
             productService.comment(user, commentForm.getProductId(), commentForm.getText(), commentForm.getRating());
             String message = messageSource.getMessage(Constants.PRODUCT_COMMENT_CREATED, new Object[0], locale);
