@@ -2,16 +2,14 @@ package es.storeapp.business.entities;
 
 import es.storeapp.common.Constants;
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+@NamedQueries({
+        @NamedQuery(name = "Comment.CountByUserAndProduct",
+                query = "SELECT COUNT(c.commentId) FROM Comment c WHERE c.user.userId = :userId AND c.product.productId = :productId"),
+        @NamedQuery(name = "Comment.FindByUserAndProduct",
+                query = "SELECT c FROM Comment c WHERE c.user.userId = :userId AND c.product.productId = :productId")
+})
 @Entity(name = Constants.COMMENT_ENTITY)
 @Table(name = Constants.COMMENTS_TABLE)
 public class Comment implements Serializable{

@@ -1,12 +1,15 @@
 package es.storeapp.business.entities;
 
 import es.storeapp.common.Constants;
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.data.jpa.repository.Query;
 
+import java.io.Serializable;
+import javax.persistence.*;
+
+@NamedQueries(
+        @NamedQuery(name="Category.FindHighlighted",
+                query="SELECT c FROM Category c WHERE c.highlighted = true")
+)
 @Entity(name = Constants.CATEGORY_ENTITY)
 @Table(name = Constants.CATEGORIES_TABLE)
 public class Category implements Serializable {

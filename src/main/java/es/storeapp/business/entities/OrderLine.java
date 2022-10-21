@@ -3,16 +3,12 @@ package es.storeapp.business.entities;
 import es.storeapp.common.Constants;
 import java.io.Serializable;
 import java.text.MessageFormat;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+@NamedQueries(
+        @NamedQuery(name="OrderLine.FindByUserAndProduct",
+                query="SELECT COUNT(ol.orderLineId) FROM OrderLine ol WHERE ol.order.state = es.storeapp.business.entities.OrderState.COMPLETED AND ol.order.user.userId = :userId AND ol.product.productId = :productId")
+)
 @Entity(name = Constants.ORDER_LINE_ENTITY)
 @Table(name = Constants.ORDER_LINES_TABLE)
 public class OrderLine implements Serializable {
