@@ -1,10 +1,10 @@
 package es.storeapp.business.repositories;
 
 import es.storeapp.business.entities.User;
-import java.text.MessageFormat;
+import org.springframework.stereotype.Repository;
+
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepository extends AbstractRepository<User> {
@@ -34,24 +34,9 @@ public class UserRepository extends AbstractRepository<User> {
         //query = entityManager.createQuery(MessageFormat.format(COUNT_USER_BY_EMAIL_QUERY, email));
         /////////////
         //NEW Code
-        Query query = entityManager.createNamedQuery("User.CountByEmail", User.class)
+        Query query = entityManager.createNamedQuery("User.CountByEmail", Long.class)
                 .setParameter("email", email);
         return ((Long) query.getSingleResult() > 0);
     }
-    
-    public User findByEmailAndPassword(String email, String password) {
-        try {
-            //OLD Code - Vulnerable to SQL Injection
-            //query = entityManager.createQuery(MessageFormat.format(LOGIN_QUERY, email, password));
-            ////////////
-            //NEW Code
-            Query query = entityManager.createNamedQuery("User.LoginQuery", User.class)
-                    .setParameter("email", email)
-                    .setParameter("password", password);
-            return (User) query.getSingleResult();
-        } catch (NoResultException e) {
-            logger.error(e.getMessage(), e);
-            return null;
-        }
-    }
+
 }
