@@ -34,7 +34,7 @@ public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    // Comentado porque es inseguro
+    //Removed because it is insecure
     //private static final String SALT = "$2a$10$MN0gK0ldpCgN9jx6r0VYQO";
 
     @Autowired
@@ -172,10 +172,7 @@ public class UserService {
             throw exceptionGenerationUtils.toAuthenticationException(
                     Constants.AUTH_INVALID_USER_MESSAGE, id.toString());
         }
-        /*
-         * Comprobamos con bcrypt que coincida con el salt que tiene establecido
-         * y la contraseña sea correcta
-         */
+        // Comprobamos con bcrypt que la contraseña sea correcta
         if (!BCrypt.checkpw(oldPassword, user.getPassword())) {
             throw exceptionGenerationUtils.toAuthenticationException(Constants.AUTH_INVALID_PASSWORD_MESSAGE,
                     id.toString());

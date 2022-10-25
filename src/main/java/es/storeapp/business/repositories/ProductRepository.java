@@ -18,8 +18,7 @@ public class ProductRepository extends AbstractRepository<Product> {
         /////////////
         //NEW Code
         Query query = entityManager.createNamedQuery("Product.FindByCategory", Product.class)
-                .setParameter("categoryName", category)
-                .setParameter("order", orderColumn);
+                .setParameter("categoryName", category);
         return query.getResultList();
     }
     

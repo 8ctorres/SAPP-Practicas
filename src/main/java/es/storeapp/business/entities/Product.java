@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @NamedQueries(
         @NamedQuery(name="Product.FindByCategory",
-                query="SELECT p FROM Product p where p.category.name = :categoryName ORDER BY p.:order")
+                query="SELECT p FROM Product p where p.category.name = :categoryName")
 )
 @Entity(name = Constants.PRODUCT_ENTITY)
 @Table(name = Constants.PRODUCTS_TABLE)
