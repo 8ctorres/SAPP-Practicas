@@ -56,6 +56,7 @@ public class Constants {
     
     public static final String ROOT_ENDPOINT = "/";
     public static final String ALL_ENDPOINTS = "/**";
+    public static final String ERROR_ENDPOINT = "/error";
     public static final String LOGIN_ENDPOINT = "/login";
     public static final String LOGOUT_ENDPOINT = "/logout";
     public static final String USER_PROFILE_ALL_ENDPOINTS = "/profile/**";
@@ -89,7 +90,7 @@ public class Constants {
     
     public static final String LOGIN_PAGE = "Login";
     public static final String HOME_PAGE = "Index";
-    public static final String ERROR_PAGE = "error";
+    public static final String ERROR_PAGE = "Error";
     public static final String PASSWORD_PAGE = "ChangePassword";
     public static final String SEND_EMAIL_PAGE = "SendEmail";
     public static final String RESET_PASSWORD_PAGE = "ResetPassword";
