@@ -37,6 +37,13 @@ public class ExceptionGenerationUtils {
         return new AuthenticationException(message);
     }
 
+    public AuthenticationException toAuthenticationException(String messageKey)
+            throws AuthenticationException {
+        Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource.getMessage(messageKey, new Object[0], locale);
+        return new AuthenticationException(message);
+    }
+
     public InvalidStateException toInvalidStateException(String messageKey) throws InvalidStateException {
         Locale locale = LocaleContextHolder.getLocale();
         String message = messageSource.getMessage(messageKey, new Object[0], locale);

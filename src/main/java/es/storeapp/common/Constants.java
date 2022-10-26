@@ -10,6 +10,8 @@ public class Constants {
     
     public static final String AUTH_INVALID_USER_MESSAGE = "auth.invalid.user";
     public static final String AUTH_INVALID_PASSWORD_MESSAGE = "auth.invalid.password";
+    // New message that doesn't tell if what's wrong is the username or the password
+    public static final String AUTH_INVALID_LOGIN_MESSAGE = "auth.invalid.login";
     public static final String AUTH_INVALID_TOKEN_MESSAGE = "auth.invalid.token";
     public static final String REGISTRATION_INVALID_PARAMS_MESSAGE = "registration.invalid.parameters";
     public static final String UPDATE_PROFILE_INVALID_PARAMS_MESSAGE = "update.profile.invalid.parameters";

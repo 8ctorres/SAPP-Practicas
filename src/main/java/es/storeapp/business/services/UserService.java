@@ -63,16 +63,18 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User login(String email, String clearPassword) throws AuthenticationException {
-        if (!userRepository.existsUser(email)) {
-            throw exceptionGenerationUtils.toAuthenticationException(Constants.AUTH_INVALID_USER_MESSAGE, email);
-        }
-        /*
-        * Buscamos el usuario por email y luego comprobamos con bcrypt
-        * que coincida con el salt que tiene establecido
-        */
+        /* Buscamos el usuario por email y luego comprobamos con bcrypt
+        *  que el password coincida con el hash que hay guardado */
         User user = userRepository.findByEmail(email);
+        /* En lugar de primero comprobar si existe y luego buscarlo, es más eficiente buscarlo
+        *  directamente, y si sale "null" es que no existe. Así es una sola consulta en vez de dos.
+        *  Además, independientemente de si lo que falla es el username o el password, devolvemos
+        *  exactamente el mismo mensaje de error, minimizando la información que damos a un atacante. */
+        if (user == null){
+            throw exceptionGenerationUtils.toAuthenticationException(Constants.AUTH_INVALID_LOGIN_MESSAGE);
+        }
         if (!BCrypt.checkpw(clearPassword, user.getPassword())) {
-            throw exceptionGenerationUtils.toAuthenticationException(Constants.AUTH_INVALID_PASSWORD_MESSAGE, email);
+            throw exceptionGenerationUtils.toAuthenticationException(Constants.AUTH_INVALID_LOGIN_MESSAGE);
         }
         return user;
     }
