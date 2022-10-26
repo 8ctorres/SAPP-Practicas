@@ -24,7 +24,7 @@ public class CommentRepository extends AbstractRepository<Comment>{
         query = entityManager.createQuery(MessageFormat
             .format(COUNT_BY_USER_AND_PRODUCT_QUERY, userId, productId));
          */
-        Query query = entityManager.createNamedQuery("Comment.CountByUserAndProduct", Comment.class)
+        Query query = entityManager.createNamedQuery("Comment.CountByUserAndProduct", Long.class)
                 .setParameter("userId", userId)
                 .setParameter("productId", productId);
         return (Integer) query.getSingleResult();

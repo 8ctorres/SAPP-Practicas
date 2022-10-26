@@ -6,7 +6,7 @@ import java.text.MessageFormat;
 import javax.persistence.*;
 
 @NamedQueries(
-        @NamedQuery(name="OrderLine.FindByUserAndProduct",
+        @NamedQuery(name="OrderLine.CountByUserAndProduct",
                 query="SELECT COUNT(ol.orderLineId) FROM OrderLine ol WHERE ol.order.state = es.storeapp.business.entities.OrderState.COMPLETED AND ol.order.user.userId = :userId AND ol.product.productId = :productId")
 )
 @Entity(name = Constants.ORDER_LINE_ENTITY)

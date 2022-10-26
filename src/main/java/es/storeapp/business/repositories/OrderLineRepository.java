@@ -20,7 +20,7 @@ public class OrderLineRepository extends AbstractRepository<OrderLine>{
         //query = entityManager.createQuery(MessageFormat.format(FIND_BY_USER_AND_PRODUCT_QUERY, userId, productId));
         /////////////
         //NEW Code
-        Query query = entityManager.createNamedQuery("OrderLine.FindByUserAndProduct", OrderLine.class)
+        Query query = entityManager.createNamedQuery("OrderLine.CountByUserAndProduct", Long.class)
                 .setParameter("userId", userId)
                 .setParameter("productId", productId);
         return ((Long) query.getSingleResult()) > 0;
