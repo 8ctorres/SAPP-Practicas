@@ -38,9 +38,4 @@ public class HomeController {
                 );
         return Constants.HOME_PAGE;
     }
-
-    @GetMapping(value = {Constants.ERROR_ENDPOINT})
-    public String doGetErrorPage(Model model, HttpServletResponse response) {
-        return Constants.ERROR_PAGE;
-    }
 }
