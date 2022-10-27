@@ -73,6 +73,9 @@ public class CommentController {
         try {
             // Línea añadida para escapar los caracteres introducidos en un comentario para de este modo que el texto no sea ejecutable
             commentForm.setText(HtmlUtils.htmlEscape(commentForm.getText()));
+            // Si no recibimos ningún valor como valoración establecemos un 0
+            if (commentForm.getRating() == null)
+                commentForm.setRating(0);
             productService.comment(user, commentForm.getProductId(), commentForm.getText(), commentForm.getRating());
             String message = messageSource.getMessage(Constants.PRODUCT_COMMENT_CREATED, new Object[0], locale);
             redirectAttributes.addFlashAttribute(Constants.SUCCESS_MESSAGE, message);
