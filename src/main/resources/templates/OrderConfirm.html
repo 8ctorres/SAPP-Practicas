@@ -36,7 +36,7 @@
 
                      <div class="row">
                         <div class="col-12 form-title">
-                           <h2 th:utext="#{new.order.title}" ></h2>
+                           <h2 th:text="#{new.order.title}" ></h2>
                         </div>
                      </div>
 
@@ -45,7 +45,7 @@
                      <div class="row mx-auto w-100" th:if="${products.size() == 0}">
                         <div class="col">
                            <div class="alert alert-warning">
-                              <span th:utext="#{shopping.cart.empty}"></span>
+                              <span th:text="#{shopping.cart.empty}"></span>
                            </div>               
                         </div>
                      </div>
@@ -59,9 +59,9 @@
                         <input th:each="product : ${products}" type="hidden" 
                                name="products[]" th:value="${product.productId}"/>
                         <div class="form-group row">
-                           <label class="col-4 text-right" th:utext="#{order.total.price}"></label>
+                           <label class="col-4 text-right" th:text="#{order.total.price}"></label>
                            <div class="col-8 text-left">
-                              <span th:utext="${orderForm.price}"></span>&euro;
+                              <span th:text="${orderForm.price}"></span>&euro;
                            </div>
                         </div>
                         <div class="form-group row">
@@ -70,7 +70,7 @@
                               <label class="form-check-label">
                                  <input type="radio" name="defaultAddress" value="true" 
                                         class="radio-off form-check-input" checked>
-                                 <span th:utext="#{order.default.address}"></span>
+                                 <span th:text="#{order.default.address}"></span>
                               </label>
                            </div>
                         </div>
@@ -80,12 +80,12 @@
                               <label class="form-check-label">
                                  <input type="radio" name="defaultAddress" value="false" 
                                         class="radio-on form-check-input">
-                                 <span th:utext="#{order.different.address}"></span>
+                                 <span th:text="#{order.different.address}"></span>
                               </label>
                            </div>
                         </div>
                         <div class="form-group row">
-                           <label for="address" class="col-4 text-right" th:utext="#{order.address}"></label>
+                           <label for="address" class="col-4 text-right" th:text="#{order.address}"></label>
                            <div class="input-group col-8 col-sm-6">
                               <textarea th:field="*{address}" class="form-control" id="address" name="address" rows="3"
                                         th:errorclass="error"
@@ -126,24 +126,24 @@
                   <thead>
                      <tr>
                         <th data-priority="2" data-orderable="false" data-order="false"></th>
-                        <th data-priority="1" th:utext="#{product.name}"></th>
-                        <th data-priority="5" th:utext="#{product.description}"></th>
-                        <th data-priority="4" th:utext="#{product.category}"></th>
-                        <th data-priority="3" th:utext="#{product.rating}"></th>
-                        <th data-priority="2" th:utext="#{product.price}"></th>
+                        <th data-priority="1" th:text="#{product.name}"></th>
+                        <th data-priority="5" th:text="#{product.description}"></th>
+                        <th data-priority="4" th:text="#{product.category}"></th>
+                        <th data-priority="3" th:text="#{product.rating}"></th>
+                        <th data-priority="2" th:text="#{product.price}"></th>
                      </tr>
                   </thead>
                   <tbody>
                      <tr th:each="product,status  : ${products}">
                         <td class="align-middle"><i class="fas" th:classappend="${product.icon}"></i></td>
                         <td class="align-middle">
-                           <span th:utext="${product.name}" th:title="${product.description}"></span></td>
-                        <td th:utext="${product.description}"></td>
-                        <td class="align-middle" th:utext="${product.category.name}"></td>
+                           <span th:text="${product.name}" th:title="${product.description}"></span></td>
+                        <td th:text="${product.description}"></td>
+                        <td class="align-middle" th:text="${product.category.name}"></td>
                         <td class="align-middle">
                            <input type="text" class="rating-loading" th:value="${product.rating}"/>
                         </td>
-                        <td class="align-middle"><span th:utext="${product.price}"></span><span>&euro;</span></td>
+                        <td class="align-middle"><span th:text="${product.price}"></span><span>&euro;</span></td>
                      </tr>
                   </tbody>
                </table>

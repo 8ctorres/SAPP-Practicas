@@ -29,8 +29,8 @@
                   <div class="card-body">
                      <div class="row">
                         <div class="col-12 form-title">
-                           <h2 th:utext="#{registration.title}" th:if="${session['user'] == null}"></h2>
-                           <h2 th:utext="#{edit.profile.title}" th:unless="${session['user'] == null}"></h2>
+                           <h2 th:text="#{registration.title}" th:if="${session['user'] == null}"></h2>
+                           <h2 th:text="#{edit.profile.title}" th:unless="${session['user'] == null}"></h2>
                         </div>
                      </div>
 
@@ -40,7 +40,7 @@
                            enctype="multipart/form-data">
                         <div class="form-group row">
                            <label for="name" class="col-3 text-right input-label-middle"
-                                  th:utext="#{profile.input.name}"></label>
+                                  th:text="#{profile.input.name}"></label>
                            <div class="input-group col-9 col-sm-6">
                               <div class="input-group-prepend">
                                  <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
@@ -60,7 +60,7 @@
                         </div>
                         <div class="form-group row">
                            <label for="email" class="col-3 text-right input-label-middle"
-                                  th:utext="#{profile.input.email}"></label>
+                                  th:text="#{profile.input.email}"></label>
                            <div class="input-group col-9 col-sm-6">
                               <div class="input-group-prepend">
                                  <span class="input-group-text"><i class="fas fa-at"></i></span>
@@ -75,7 +75,7 @@
                            </div>
                            <div class="d-none d-sm-block col-sm-3">
                               <small id="emailHelp" class="form-text text-muted text-left"
-                                  th:utext="#{profile.input.email.tip}"></small>
+                                  th:text="#{profile.input.email.tip}"></small>
                            </div>
                         </div>
                         <div class="form-group row d-none">
@@ -84,7 +84,7 @@
                         </div>
                         <div class="form-group row" th:if="${session['user'] == null}">
                            <label for="password_confirmation" class="col-3 text-right input-label-middle"
-                                  th:utext="#{profile.input.password}"></label>
+                                  th:text="#{profile.input.password}"></label>
                            <div class="input-group col-9 col-sm-6">
                               <div class="input-group-prepend">
                                  <span class="input-group-text"><i class="fas fa-lock"></i></span>
@@ -103,7 +103,7 @@
                         </div>
                         <div class="form-group row" th:if="${session['user'] == null}">
                            <label for="password" class="col-3 text-right input-label-middle"
-                                  th:utext="#{profile.input.password.confirm}"></label>
+                                  th:text="#{profile.input.password.confirm}"></label>
                            <div class="input-group col-9 col-sm-6">
                               <div class="input-group-prepend">
                                  <span class="input-group-text"><i class="fas fa-redo"></i></span>
@@ -121,7 +121,7 @@
                            <div class="col-9 text-left" id="input-password-error"></div>
                         </div>
                         <div class="form-group row">
-                           <label for="address" class="col-3 text-right" th:utext="#{profile.input.address}">
+                           <label for="address" class="col-3 text-right" th:text="#{profile.input.address}">
                            </label>
                            <div class="input-group col-9 col-sm-6">
                               <textarea th:field="*{address}" class="form-control" id="address" name="address" rows="3"
@@ -137,7 +137,7 @@
                            <div class="col-9 text-left" id="input-address-error"></div>
                         </div>
                         <div class="form-group row">
-                           <label for="image" class="col-3 text-right" th:utext="#{profile.input.image}"></label>
+                           <label for="image" class="col-3 text-right" th:text="#{profile.input.image}"></label>
                            <div class="input-group col-9 col-sm-6">
                               <input type="file" class="form-control-file" id="image" name="image"
                                      th:field="*{image}"
@@ -148,7 +148,7 @@
                            </div>
                            <div class="d-none d-sm-block col-sm-3">
                               <small id="imageHelp" class="form-text text-muted text-left"
-                                     th:utext="#{profile.input.image.tip}"></small>
+                                     th:text="#{profile.input.image.tip}"></small>
                            </div>
                         </div>
                         <div class="form-group row d-none">
@@ -157,7 +157,7 @@
                         </div>
                         <div class="form-group row" th:if="${session['user'] != null && !#strings.isEmpty(session['user'].image)}">
                            <label for="image" class="col-3 text-right" 
-                                  th:utext="#{profile.input.current.image}"></label>
+                                  th:text="#{profile.input.current.image}"></label>
                            <div class="input-group col-6">
                               <img th:src="@{/resources/{user}/{image}(user=${session['user'].userId},image=${session['user'].image})}" 
                                    width="30" height="30"/>&nbsp;
@@ -175,9 +175,9 @@
                            <div class="col-4"></div>
                            <div class="input-group col-8">
                               <button th:if="${session['user'] == null}" type="submit" class="btn btn-primary"
-                                      th:utext="#{registration.button}"></button>
+                                      th:text="#{registration.button}"></button>
                               <button th:unless="${session['user'] == null}" type="submit" class="btn btn-primary"
-                                      th:utext="#{edit.profile.button}"></button>
+                                      th:text="#{edit.profile.button}"></button>
                            </div>
                         </div>
                      </form>
