@@ -28,7 +28,9 @@ public class HomeController {
         if(logger.isDebugEnabled()) {
             logger.debug(MessageFormat.format("Home categories: {0}", categories));
         }
-        response.setHeader("Content-Security-Policy", 
+        /*
+        * La función de CORS se hace ahora en la clase SecurityConfig
+        * response.setHeader("Content-Security-Policy",
             "default-src 'self'; "+
             "script-src 'self'; "+
             "style-src 'self' 'unsafe-inline'; " +
@@ -36,6 +38,7 @@ public class HomeController {
             "img-src 'self' data:; " +
             "require-trusted-types-for 'script';"
                 );
+        * */
         return Constants.HOME_PAGE;
     }
 }
