@@ -162,6 +162,15 @@
             <artifactId>jquery.inputmask</artifactId>
             <version>3.3.7</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>5.4.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -218,7 +227,21 @@
                     </srcFiles>
                 </configuration>
             </plugin>
-            
+
+            <!-- OWASP Dependency Check Maven Plugin.
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>6.5.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin> -->
+
         </plugins>
     </build>
 
