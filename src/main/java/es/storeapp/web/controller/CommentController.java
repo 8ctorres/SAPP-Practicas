@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.HtmlUtils;
 
 @Controller
 public class CommentController {
@@ -71,8 +70,6 @@ public class CommentController {
                                   Locale locale, 
                                   Model model) {
         try {
-            // Línea añadida para escapar los caracteres introducidos en un comentario para de este modo que el texto no sea ejecutable
-            commentForm.setText(HtmlUtils.htmlEscape(commentForm.getText()));
             // Si no recibimos ningún valor como valoración establecemos un 0
             if (commentForm.getRating() == null)
                 commentForm.setRating(0);
