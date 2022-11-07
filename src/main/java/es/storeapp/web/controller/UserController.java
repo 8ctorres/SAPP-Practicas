@@ -34,12 +34,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -116,13 +111,14 @@ public class UserController {
     }
     
     @PostMapping(Constants.LOGIN_ENDPOINT)
-    public String doLogin(@Valid @ModelAttribute LoginForm loginForm, 
+    public String doLogin(@Valid @ModelAttribute LoginForm loginForm,
                           BindingResult result,
                           @RequestParam(value = Constants.NEXT_PAGE, required = false) String next,
                           HttpSession session,
                           HttpServletResponse response,
-                          Locale locale, 
-                          Model model) {
+                          Locale locale,
+                          Model model,
+                          @RequestHeader(value = "Host") String hostname) {
         if (result.hasErrors()) {  
             errorHandlingUtils.handleInvalidFormError(result, 
                 Constants.REGISTRATION_INVALID_PARAMS_MESSAGE, model, locale);
