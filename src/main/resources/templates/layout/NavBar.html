@@ -23,21 +23,21 @@
                         <img th:unless="${#strings.isEmpty(session['user'].image)}" 
                              th:src="@{/resources/{user}/{image}(user=${session['user'].userId},image=${session['user'].image})}" 
                              width="24" height="24"/> 
-                        <span th:utext="${session['user'].name}"></span>
-                        (<span th:utext="${session['user'].email}"></span>)
+                        <span th:text="${session['user'].name}"></span>
+                        (<span th:text="${session['user'].email}"></span>)
                      </span>
                   </li>
                   
                   <li class="nav-item">
                      <a class="nav-link" href="/">
                         <span class="fas fa-home"></span>
-                        <div th:utext="#{navbar.home}"></div>
+                        <div th:text="#{navbar.home}"></div>
                      </a>
                   </li>
                   <li class="nav-item">
                      <a class="nav-link" href="/products">
                         <span class="fas fa-search"></span>
-                        <div th:utext="#{navbar.products}"></div>
+                        <div th:text="#{navbar.products}"></div>
                      </a>
                   </li>
                </ul>
@@ -46,8 +46,8 @@
                   <li class="nav-item">
                      <a class="nav-link align-items-center" href="/cart">
                         <span class="fas fa-shopping-cart"></span>
-                        <div><span th:utext="#{navbar.cart}"></span>
-                           (<b th:utext="${session['shoppingCart'].products.size()}"></b>)</div>
+                        <div><span th:text="#{navbar.cart}"></span>
+                           (<b th:text="${session['shoppingCart'].products.size()}"></b>)</div>
                      </a>
                   </li>
                </ul>
@@ -56,14 +56,14 @@
                   <li class="nav-item">
                      <a class="nav-link" href="/login">
                         <span class="fas fa-sign-in-alt"></span>
-                        <div th:utext="#{navbar.login}"></div>
+                        <div th:text="#{navbar.login}"></div>
                      </a>
                   </li>
 
                   <li class="nav-item">
                      <a class="nav-link" href="/registration">
                         <span class="fas fa-user-plus"></span>
-                        <div th:utext="#{navbar.register}"></div>
+                        <div th:text="#{navbar.register}"></div>
                      </a>
                   </li>
                </ul>
@@ -71,28 +71,28 @@
                   <li class="nav-item">
                      <a class="nav-link" href="/orders">
                         <span class="fas fa-credit-card"></span>
-                        <div th:utext="#{navbar.orders}"></div>
+                        <div th:text="#{navbar.orders}"></div>
                      </a>
                   </li>
                   <li class="nav-item dropdown">
                      <a class="nav-link dropdown-toggle" href="#" id="account-dropdown"
                         role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="fas fa-user-circle"></span>
-                        <br/><span th:utext="#{navbar.account}"></span>
+                        <br/><span th:text="#{navbar.account}"></span>
                      </a>
                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="account-dropdown">
                         <a class="dropdown-item" href="/profile">
                            <span class="fas fa-address-card"></span>&nbsp;
-                           <span th:utext="#{navbar.profile}"></span></a>
+                           <span th:text="#{navbar.profile}"></span></a>
                         <a class="dropdown-item" href="/changePassword">
                            <span class="fas fa-lock"></span>&nbsp;
-                           <span th:utext="#{navbar.password}"></span></a>
+                           <span th:text="#{navbar.password}"></span></a>
                      </div>                  
                   </li>
                   <li class="nav-item">
                      <a class="nav-link" href="/logout">
                         <span class="fas fa-sign-out-alt"></span>
-                        <div th:utext="#{navbar.logout}"></div>
+                        <div th:text="#{navbar.logout}"></div>
                      </a>
                   </li>
                </ul>

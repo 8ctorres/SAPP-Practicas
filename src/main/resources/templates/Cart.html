@@ -34,7 +34,7 @@
 
          <div class="row w-100 mx-auto">
             <div class="col-12 form-title">
-               <h2 th:utext="#{shopping.cart.title}" ></h2>
+               <h2 th:text="#{shopping.cart.title}" ></h2>
             </div>
          </div>
 
@@ -43,7 +43,7 @@
          <div class="row w-100 mx-auto" th:if="${session['shoppingCart'].products.size() == 0}">
             <div class="col">
                <div class="alert alert-warning">
-                  <span th:utext="#{shopping.cart.empty}"></span>
+                  <span th:text="#{shopping.cart.empty}"></span>
                </div>               
             </div>
          </div>
@@ -53,7 +53,7 @@
                <form th:action="@{/orders/complete}" method="GET">
                   <button class="btn btn-sm btn-success" type="submit">
                      <i class="fa fa-shopping-cart"></i>&nbsp;
-                     <span th:utext="#{shopping.cart.buy}"></span>
+                     <span th:text="#{shopping.cart.buy}"></span>
                   </button>
                </form>
             </div>
@@ -65,11 +65,11 @@
                   <thead>
                      <tr>
                         <th data-priority="2" data-orderable="false" data-order="false"></th>
-                        <th data-priority="1" th:utext="#{product.name}"></th>
-                        <th data-priority="5" th:utext="#{product.description}"></th>
-                        <th data-priority="4" th:utext="#{product.category}"></th>
-                        <th data-priority="3" th:utext="#{product.rating}"></th>
-                        <th data-priority="2" th:utext="#{product.price}"></th>
+                        <th data-priority="1" th:text="#{product.name}"></th>
+                        <th data-priority="5" th:text="#{product.description}"></th>
+                        <th data-priority="4" th:text="#{product.category}"></th>
+                        <th data-priority="3" th:text="#{product.rating}"></th>
+                        <th data-priority="2" th:text="#{product.price}"></th>
                         <th data-priority="1" data-orderable="false"><i class="fas fa-search"></i></th>
                         <th data-priority="1" data-orderable="false"><i class="fas fa-trash"></i></th>
                      </tr>
@@ -78,13 +78,13 @@
                      <tr th:each="product,status  : ${session['shoppingCart'].products}">
                         <td class="align-middle"><i class="fas" th:classappend="${product.icon}"></i></td>
                         <td class="align-middle">
-                           <span th:utext="${product.name}" th:title="${product.description}"></span></td>
-                        <td th:utext="${product.description}"></td>
-                        <td class="align-middle" th:utext="${product.category.name}"></td>
+                           <span th:text="${product.name}" th:title="${product.description}"></span></td>
+                        <td th:text="${product.description}"></td>
+                        <td class="align-middle" th:text="${product.category.name}"></td>
                         <td class="align-middle">
                            <input type="text" class="rating-loading" th:value="${product.rating}"/>
                         </td>
-                        <td class="align-middle"><span th:utext="${product.price}"></span><span>&euro;</span></td>
+                        <td class="align-middle"><span th:text="${product.price}"></span><span>&euro;</span></td>
                         <td class="align-middle">
                            <form method="GET" th:action="@{/products/{id}(id=${product.productId})}">
                               <button class="btn btn-sm btn-success" type="submit">

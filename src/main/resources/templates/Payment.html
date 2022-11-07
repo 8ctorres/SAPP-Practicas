@@ -30,7 +30,7 @@
 
                      <div class="row">
                         <div class="col-12 form-title">
-                           <h2 th:utext="#{new.order.title}" ></h2>
+                           <h2 th:text="#{new.order.title}" ></h2>
                         </div>
                      </div>
 
@@ -44,7 +44,7 @@
                               <label class="form-check-label">
                                  <input type="radio" name="defaultCreditCard" value="true" 
                                         class="radio-off form-check-input" checked>
-                                 <span th:utext="#{payment.default.card} + ' #' + 
+                                 <span th:text="#{payment.default.card} + ' #' +
                                        ${#strings.substring(session['user'].card.card,12,16)}"></span>
                               </label>
                            </div>
@@ -55,7 +55,7 @@
                               <label class="form-check-label">
                                  <input type="radio" name="defaultCreditCard" value="false" 
                                         class="radio-on form-check-input">
-                                 <span th:utext="#{payment.different.card}"></span>
+                                 <span th:text="#{payment.different.card}"></span>
                               </label>
                            </div>
                         </div>
@@ -80,7 +80,7 @@
                            <div class="col-8 col-sm-6 text-left" id="input-card-error"></div>
                         </div>
                         <div class="form-group row">
-                           <label for="cvv" class="col-4 text-right input-label-middle" th:utext="#{payment.cvv}">
+                           <label for="cvv" class="col-4 text-right input-label-middle" th:text="#{payment.cvv}">
                            </label>
                            <div class="input-group col-8 col-sm-6">
                               <input th:field="*{cvv}" class="form-control credit-card-input" 
@@ -98,7 +98,7 @@
                         </div>
                         <div class="form-group row">
                            <label for="cvv" class="col-4 text-right input-label-middle" 
-                                  th:utext="#{payment.expiration.month}"></label>
+                                  th:text="#{payment.expiration.month}"></label>
                            <div class="input-group col-8 col-sm-6">
                               <select th:field="*{expirationMonth}" class="form-control credit-card-input" 
                                       th:errorclass="error" data-validation="required"
@@ -106,19 +106,19 @@
                                       data-validation-error-msg-container="#input-expiration-month-error"
                                       th:attr="data-validation-error-msg=#{payment.input.expiration.month.validation}"
                                       th:disabled="${session['user'].card != null}">
-                                 <option value=''  th:utext="#{month.select}"></option>
-                                 <option value='1' th:utext="#{month.1}">January</option>
-                                 <option value='2' th:utext="#{month.2}">February</option>
-                                 <option value='3' th:utext="#{month.3}">March</option>
-                                 <option value='4' th:utext="#{month.4}">April</option>
-                                 <option value='5' th:utext="#{month.5}">May</option>
-                                 <option value='6' th:utext="#{month.6}">June</option>
-                                 <option value='7' th:utext="#{month.7}">July</option>
-                                 <option value='8' th:utext="#{month.8}">August</option>
-                                 <option value='9' th:utext="#{month.9}">September</option>
-                                 <option value='10' th:utext="#{month.10}">October</option>
-                                 <option value='11' th:utext="#{month.11}">November</option>
-                                 <option value='12' th:utext="#{month.12}">December</option>
+                                 <option value=''  th:text="#{month.select}"></option>
+                                 <option value='1' th:text="#{month.1}">January</option>
+                                 <option value='2' th:text="#{month.2}">February</option>
+                                 <option value='3' th:text="#{month.3}">March</option>
+                                 <option value='4' th:text="#{month.4}">April</option>
+                                 <option value='5' th:text="#{month.5}">May</option>
+                                 <option value='6' th:text="#{month.6}">June</option>
+                                 <option value='7' th:text="#{month.7}">July</option>
+                                 <option value='8' th:text="#{month.8}">August</option>
+                                 <option value='9' th:text="#{month.9}">September</option>
+                                 <option value='10' th:text="#{month.10}">October</option>
+                                 <option value='11' th:text="#{month.11}">November</option>
+                                 <option value='12' th:text="#{month.12}">December</option>
                               </select>
                            </div>
                         </div>
@@ -128,14 +128,14 @@
                         </div>
                         <div class="form-group row">
                            <label for="cvv" class="col-4 text-right input-label-middle" 
-                                  th:utext="#{payment.expiration.year}"></label>
+                                  th:text="#{payment.expiration.year}"></label>
                            <div class="input-group col-8 col-sm-6">
                               <select th:field="*{expirationYear}" class="form-control credit-card-input" 
                                       th:errorclass="error" data-validation="required"
                                       data-validation-error-msg-container="#input-expiration-year-error"
                                       th:attr="data-validation-error-msg=#{payment.input.expiration.year.validation}"
                                       th:disabled="${session['user'].card != null}">
-                                 <option value='' th:utext="#{year.select}"></option>
+                                 <option value='' th:text="#{year.select}"></option>
                                  <option value='2019'>2019</option>
                                  <option value='2020'>2020</option>
                                  <option value='2020'>2021</option>
@@ -157,7 +157,7 @@
                                  <input type="checkbox" th:field='*{save}' 
                                         class="credit-card-input form-check-input"
                                         th:disabled="${session['user'].card != null}">
-                                 <span th:utext="#{payment.set.as.default.card}"></span>
+                                 <span th:text="#{payment.set.as.default.card}"></span>
                               </label>
                            </div>
                         </div>
@@ -165,7 +165,7 @@
                            <div class="col">
                               <button class="btn btn-sm btn-success" type="submit" >
                                  <i class="fa fa-credit-card"></i>&nbsp;
-                                 <span th:utext="#{payment.pay.button}"></span>
+                                 <span th:text="#{payment.pay.button}"></span>
                               </button>
                            </div>
                         </div>  

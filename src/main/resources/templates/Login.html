@@ -21,7 +21,7 @@
 
                      <div class="row">
                         <div class="col-12 form-title">
-                           <h2 th:utext="#{login.title}"></h2>
+                           <h2 th:text="#{login.title}"></h2>
                         </div>
                      </div>
 
@@ -30,7 +30,7 @@
                      <form th:object="${loginForm}" class="form-horizontal toggle-disabled" method="POST">
                         <div class="form-group row">
                            <label for="email" class="d-none d-sm-block col-sm-3 text-right input-label-middle"
-                                  th:utext="#{profile.input.email}"></label>
+                                  th:text="#{profile.input.email}"></label>
                            <div class="input-group col-12 col-sm-6">
                               <div class="input-group-prepend">
                                  <span class="input-group-text"><i class="fas fa-at"></i></span>
@@ -49,7 +49,7 @@
                         </div>
                         <div class="form-group row">
                            <label for="password" class="d-none d-sm-block col-sm-3 text-right input-label-middle"
-                                  th:utext="#{profile.input.password}"></label>
+                                  th:text="#{profile.input.password}"></label>
                            <div class="input-group col-12 col-sm-6">
                               <div class="input-group-prepend">
                                  <span class="input-group-text"><i class="fas fa-lock"></i></span>
@@ -73,7 +73,7 @@
                               <label class="form-check-label input-label-middle">
                                  <input type="checkbox" th:field='*{rememberMe}' 
                                         class="form-check-input">
-                                 <span th:utext="#{login.remember.me}"></span>
+                                 <span th:text="#{login.remember.me}"></span>
                               </label>
                            </div>
                         </div>
@@ -83,7 +83,7 @@
                            <div class="input-group col-12 col-sm-9">
                               <label class="form-check-label input-label-middle">
                                  <a class="" id="remove-image-link" href="/sendEmail">
-                                    <span th:utext="#{login.forgot.password}"></span>   
+                                    <span th:text="#{login.forgot.password}"></span>
                                  </a>
                               </label>
                            </div>
@@ -92,7 +92,7 @@
                         <div class="form-group row">
                            <div class="d-none d-sm-block col-sm-3"></div>
                            <div class="input-group col-12 col-sm-9">
-                              <button type="submit" class="btn btn-primary" th:utext="#{login.button}"></button>
+                              <button type="submit" class="btn btn-primary" th:text="#{login.button}"></button>
                            </div>
                         </div>
                      </form>

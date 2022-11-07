@@ -21,7 +21,7 @@
 
                      <div class="row">
                         <div class="col-12 form-title">
-                           <h2 th:utext="#{send.email.title}"></h2>
+                           <h2 th:text="#{send.email.title}"></h2>
                         </div>
                      </div>
 
@@ -30,7 +30,7 @@
                      <form  class="form-horizontal toggle-disabled" method="POST">
                         <div class="form-group row">
                            <label for="email" class="d-none d-sm-block col-sm-3 text-right input-label-middle"
-                                  th:utext="#{profile.input.email}"></label>
+                                  th:text="#{profile.input.email}"></label>
                            <div class="input-group col-12 col-sm-6">
                               <div class="input-group-prepend">
                                  <span class="input-group-text"><i class="fas fa-at"></i></span>
@@ -52,7 +52,7 @@
                            <div class="d-inline col-12 col-sm-6">
                               <button type="submit" class="btn btn-primary">
                                  <i class="fa fa-envelope"></i>
-                                 <span th:utext="#{send.email.button}"></span>
+                                 <span th:text="#{send.email.button}"></span>
                               </button>
                            </div>
                         </div>

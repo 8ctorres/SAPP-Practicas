@@ -165,6 +165,15 @@
             <artifactId>jquery.inputmask</artifactId>
             <version>5.0.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>5.4.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -205,7 +214,7 @@
                     <dependency>
                         <groupId>org.apache.derby</groupId>
                         <artifactId>derby</artifactId>
-                        <version>10.16.1.1</version>
+                        <version>10.14.2.0</version>
                     </dependency>
                 </dependencies>
                 <configuration>
@@ -221,7 +230,7 @@
                     </srcFiles>
                 </configuration>
             </plugin>
-	<!--
+            <!--
             <plugin>
               <groupId>org.owasp</groupId>
               <artifactId>dependency-check-maven</artifactId>
@@ -234,8 +243,7 @@
                   </execution>
               </executions>
             </plugin>
-	-->
-            
+            -->
         </plugins>
     </build>
 
