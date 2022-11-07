@@ -16,6 +16,8 @@ import es.storeapp.web.forms.UserProfileForm;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.Base64;
 import java.util.Locale;
@@ -34,13 +36,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static es.storeapp.common.Constants.*;
 
 @Controller
 public class UserController {
@@ -92,7 +91,7 @@ public class UserController {
         return Constants.USER_PROFILE_PAGE;
     }
 
-    @GetMapping(Constants.CHANGE_PASSWORD_ENDPOINT)
+    @GetMapping(CHANGE_PASSWORD_ENDPOINT)
     public String doGetChangePasswordPage(Model model, @SessionAttribute(Constants.USER_SESSION) User user) {
         ChangePasswordForm form = new ChangePasswordForm();
         model.addAttribute(Constants.PASSWORD_FORM, form);
@@ -116,15 +115,17 @@ public class UserController {
     }
     
     @PostMapping(Constants.LOGIN_ENDPOINT)
-    public String doLogin(@Valid @ModelAttribute LoginForm loginForm, 
+    public String doLogin(@Valid @ModelAttribute LoginForm loginForm,
                           BindingResult result,
                           @RequestParam(value = Constants.NEXT_PAGE, required = false) String next,
                           HttpSession session,
                           HttpServletResponse response,
-                          Locale locale, 
-                          Model model) {
-        if (result.hasErrors()) {  
-            errorHandlingUtils.handleInvalidFormError(result, 
+                          Locale locale,
+                          Model model,
+                          @RequestHeader(value="Host") String hostHeader,
+                          @RequestHeader(value="X-Forwarded-Host", required = false) String xForwardedHostHeader) {
+        if (result.hasErrors()) {
+            errorHandlingUtils.handleInvalidFormError(result,
                 Constants.REGISTRATION_INVALID_PARAMS_MESSAGE, model, locale);
             return Constants.USER_PROFILE_PAGE;
         }
@@ -150,13 +151,35 @@ public class UserController {
             if(logger.isDebugEnabled()) {
                 logger.debug(MessageFormat.format("User {0} not logged in ", loginForm.getEmail()));
             }
-            return errorHandlingUtils.handleAuthenticationException(ex, loginForm.getEmail(), 
+            return errorHandlingUtils.handleAuthenticationException(ex, loginForm.getEmail(),
                     Constants.LOGIN_PAGE, model, locale);
         }
-        if (next != null && next.trim().length() > 0) {
-            return Constants.SEND_REDIRECT + next;
+        /*
+         * Añadimos una comprobación para verificar que el host y el path
+         * usado como siguiente URL sean válidos y esté dentro de nuestra
+         * aplicación
+         * */
+        if (next == null || next.trim().length() == 0) {
+            return Constants.SEND_REDIRECT + Constants.ROOT_ENDPOINT;
         }
-        return Constants.SEND_REDIRECT + Constants.ROOT_ENDPOINT;
+        try {
+            URI uri = new URI(next);
+            if (xForwardedHostHeader == null) {
+                xForwardedHostHeader = hostHeader;
+            }
+
+            if (xForwardedHostHeader.contains(uri.getHost())) {
+                if (uri.getPath().contains(ORDERS_ENDPOINT) ||
+                        uri.getPath().contains(USER_PROFILE_ENDPOINT) ||
+                        uri.getPath().contains(CHANGE_PASSWORD_ENDPOINT) ||
+                        uri.getPath().contains(PRODUCTS_ENDPOINT)) {
+                    return Constants.SEND_REDIRECT + next;
+                }
+            }
+            return Constants.SEND_REDIRECT + Constants.ROOT_ENDPOINT;
+        } catch (URISyntaxException e) {
+            return Constants.SEND_REDIRECT + Constants.ROOT_ENDPOINT;
+        }
     }
 
     @PostMapping(Constants.REGISTRATION_ENDPOINT)
@@ -229,7 +252,7 @@ public class UserController {
         return Constants.USER_PROFILE_PAGE;
     }
 
-    @PostMapping(Constants.CHANGE_PASSWORD_ENDPOINT)
+    @PostMapping(CHANGE_PASSWORD_ENDPOINT)
     public String doChangePassword(@Valid @ModelAttribute(Constants.PASSWORD_FORM) ChangePasswordForm passwordForm,
                                    BindingResult result,
                                    @SessionAttribute(Constants.USER_SESSION) User user,
