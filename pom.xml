@@ -58,8 +58,6 @@
             <artifactId>commons-email</artifactId>
             <version>1.5</version>
         </dependency>
-        <!--
-            COMENTAMOS Y DEJAMOS QUE SPRING BOOT ESPECIFIQUE LAS VERSIONES
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
@@ -75,7 +73,6 @@
             <artifactId>jaxb-impl</artifactId>
             <version>2.3.0</version>
         </dependency>
-        -->
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
@@ -102,17 +99,17 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>5.2.2</version>
+            <version>4.0.0-2</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
-            <version>3.6.1</version>
+            <version>3.3.1-1</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
-            <version>6.2.0</version>
+            <version>5.0.6</version>
         </dependency>
         <dependency>
             <groupId>org.webjars.bower</groupId>
@@ -163,11 +160,12 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery.inputmask</artifactId>
-            <version>5.0.5</version>
+            <version>3.3.7</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
+            <version>5.4.6</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -213,7 +211,7 @@
                     <dependency>
                         <groupId>org.apache.derby</groupId>
                         <artifactId>derby</artifactId>
-                        <version>10.14.2.0</version>
+                        <version>10.16.1.1</version>
                     </dependency>
                 </dependencies>
                 <configuration>
@@ -229,20 +227,21 @@
                     </srcFiles>
                 </configuration>
             </plugin>
-            <!--
+
+            <!-- OWASP Dependency Check Maven Plugin.
             <plugin>
-              <groupId>org.owasp</groupId>
-              <artifactId>dependency-check-maven</artifactId>
-              <version>7.3.0</version>
-              <executions>
-                  <execution>
-                      <goals>
-                          <goal>check</goal>
-                      </goals>
-                  </execution>
-              </executions>
-            </plugin>
-            -->
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>6.5.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin> -->
+
         </plugins>
     </build>
 
