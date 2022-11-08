@@ -60,8 +60,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/webjars/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/Scripts.js").permitAll()
                 .antMatchers(HttpMethod.GET, "/Styles.css").permitAll()
-                .anyRequest().denyAll();
-
+                .anyRequest().denyAll()
+                .and().headers().xssProtection()
+                .and().contentSecurityPolicy("form-action 'self'");
     }
 
     @Bean
