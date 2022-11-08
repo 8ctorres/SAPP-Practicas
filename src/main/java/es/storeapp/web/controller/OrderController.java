@@ -164,6 +164,8 @@ public class OrderController {
                 logger.info(MessageFormat.format(
                         "User {0} paying order {1} with default credit card", user.getEmail(), order.getOrderId()));
             } else {
+                if (paymentForm.getSave() == null)
+                    paymentForm.setSave(false);
                 order = orderService.pay(user, id, paymentForm.getCreditCard(), paymentForm.getCvv(),
                         paymentForm.getExpirationMonth(), paymentForm.getExpirationYear(), paymentForm.getSave());
                 logger.info(MessageFormat.format(

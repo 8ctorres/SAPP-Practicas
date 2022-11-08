@@ -1,5 +1,6 @@
 package es.storeapp.web.forms;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
@@ -7,15 +8,20 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserProfileForm {
 
     @NotNull
-    @Size(min=4)
+    @Size(min = 4, max = 60)
     private String name;
     
     @NotNull
+    @Size(min = 4, max = 60)
+    @Email
     private String email;
-    
-    private String password;
-    
+
     @NotNull
+    @Size(min = 1, max = 60)
+    private String password;
+
+    @NotNull
+    @Size(min = 1, max = 100)
     private String address;
     
     private MultipartFile image;

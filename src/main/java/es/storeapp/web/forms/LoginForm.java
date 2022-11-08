@@ -1,16 +1,18 @@
 package es.storeapp.web.forms;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class LoginForm {
     
     @NotNull
-    @Size(min=1)
+    @Size(min = 1, max = 60)
+    @Email
     private String email;
     
     @NotNull
-    @Size(min=1)
+    @Size(min = 1, max = 60)
     private String password;
 
     private Boolean rememberMe;

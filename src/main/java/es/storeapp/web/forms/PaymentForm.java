@@ -1,11 +1,18 @@
 package es.storeapp.web.forms;
 
+import javax.validation.constraints.Size;
+
 public class PaymentForm {
-    
+
+
     private Boolean defaultCreditCard;
+    @Size(min = 16, max = 16)
     private String creditCard;
+    @Size(min = 3, max = 3)
     private Integer cvv;
+    @Size(min = 1)
     private Integer expirationMonth;
+    @Size(min = 1)
     private Integer expirationYear;
     private Boolean save;
 
