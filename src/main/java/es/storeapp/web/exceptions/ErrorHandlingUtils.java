@@ -35,7 +35,8 @@ public class ErrorHandlingUtils {
     public String handleInstanceNotFoundException(InstanceNotFoundException e, Model model, Locale locale) {
         logger.error(e.getMessage(), e);
         model.addAttribute(Constants.ERROR_MESSAGE, e.getMessage());
-        model.addAttribute(Constants.EXCEPTION, e);
+        // Comentamos esta línea para que no se muestre el stacktrace cuando salte esta excepción
+        //model.addAttribute(Constants.EXCEPTION, e);
         return Constants.ERROR_PAGE;
     }
     
@@ -43,7 +44,8 @@ public class ErrorHandlingUtils {
                                                     Model model, Locale locale) {
         logger.error(e.getMessage(), e);
         model.addAttribute(Constants.ERROR_MESSAGE, e.getMessage());
-        model.addAttribute(Constants.EXCEPTION, e);
+        // Comentamos esta línea para que no se muestre el stacktrace cuando salte esta excepción
+        //model.addAttribute(Constants.EXCEPTION, e);
         return targetPage;
     }
 
@@ -51,21 +53,24 @@ public class ErrorHandlingUtils {
                                                 Model model, Locale locale) {
         logger.error(e.getMessage(), e);
         model.addAttribute(Constants.ERROR_MESSAGE, e.getMessage());
-        model.addAttribute(Constants.EXCEPTION, e);
+        // Comentamos esta línea para que no se muestre el stacktrace cuando salte esta excepción
+        //model.addAttribute(Constants.EXCEPTION, e);
         return targetPage;
     }
     
     public String handleInvalidStateException(InvalidStateException e, Model model, Locale locale) {
         logger.error(e.getMessage(), e);
         model.addAttribute(Constants.ERROR_MESSAGE, e.getMessage());
-        model.addAttribute(Constants.EXCEPTION, e);
+        // Comentamos esta línea para que no se muestre el stacktrace cuando salte esta excepción
+        //model.addAttribute(Constants.EXCEPTION, e);
         return Constants.ERROR_PAGE;
     }
     
     public String handleUnexpectedException(Exception e, Model model) {
         logger.error(e.getMessage(), e);
         model.addAttribute(Constants.ERROR_MESSAGE, e.getMessage());
-        model.addAttribute(Constants.EXCEPTION, e);
+        // Comentamos esta línea para que no se muestre el stacktrace cuando salte esta excepción
+        //model.addAttribute(Constants.EXCEPTION, e);
         return Constants.ERROR_PAGE;
     }
 }
