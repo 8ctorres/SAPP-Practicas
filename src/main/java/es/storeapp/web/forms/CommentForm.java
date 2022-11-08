@@ -1,7 +1,10 @@
 package es.storeapp.web.forms;
 
+import javax.validation.constraints.NotNull;
+
 public class CommentForm {
-    
+
+    @NotNull
     private Long productId;
     private String text;
     private Integer rating;

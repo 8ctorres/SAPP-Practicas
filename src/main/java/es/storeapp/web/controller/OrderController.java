@@ -163,6 +163,8 @@ public class OrderController {
                 order = orderService.pay(user, id, card.getCard(), card.getCvv(), card.getExpirationMonth(),
                         card.getExpirationYear(), false);
             } else {
+                if (paymentForm.getSave() == null)
+                    paymentForm.setSave(false);
                 order = orderService.pay(user, id, paymentForm.getCreditCard(), paymentForm.getCvv(),
                         paymentForm.getExpirationMonth(), paymentForm.getExpirationYear(), paymentForm.getSave());
                 if(paymentForm.getSave()) {

@@ -1,9 +1,19 @@
 package es.storeapp.web.forms;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class ResetPasswordForm {
 
+    @NotNull
     private String token;
+    @NotNull
+    @Size(min = 1, max = 60)
+    @Email
     private String email;
+    @NotNull
+    @Size(min = 1, max = 60)
     private String password;
 
     public String getToken() {
