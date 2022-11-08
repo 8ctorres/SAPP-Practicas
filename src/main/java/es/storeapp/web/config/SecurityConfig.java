@@ -62,7 +62,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/Styles.css").permitAll()
                 .anyRequest().denyAll()
                 .and().headers().xssProtection()
-                .and().contentSecurityPolicy("form-action 'self'");
+                .and().contentSecurityPolicy("default-src 'self'; " +
+                        "script-src 'self' 'unsafe-inline'; " +
+                        "style-src 'self' 'unsafe-inline'; " +
+                        "img-src 'self' data:; " +
+                        "object-src 'none'; " +
+                        "base-uri 'none'; ");
     }
 
     @Bean
