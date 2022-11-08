@@ -59,9 +59,7 @@ public class ProductController {
                 model.addAttribute(Constants.BUY_BY_USER, false);
             }
         } catch (InstanceNotFoundException ex) {
-            if(logger.isErrorEnabled()) {
-                logger.error(ex.getMessage(), ex);
-            }
+            logger.error(ex.getMessage(), ex);
             return errorHandlingUtils.handleInstanceNotFoundException(ex, model, locale);
         }
         

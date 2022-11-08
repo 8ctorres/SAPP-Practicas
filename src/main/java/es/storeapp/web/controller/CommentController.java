@@ -52,9 +52,7 @@ public class CommentController {
             if(comment != null) {
                 commentForm.setRating(comment.getRating());
                 commentForm.setText(comment.getText());
-                if(logger.isDebugEnabled()) {
-                    logger.debug(MessageFormat.format("Loading previous comment {0}", commentForm));
-                }
+                logger.debug(MessageFormat.format("Loading previous comment {0}", commentForm));
             }
         } catch (InstanceNotFoundException ex) {
             return errorHandlingUtils.handleInstanceNotFoundException(ex, model, locale);
@@ -71,8 +69,10 @@ public class CommentController {
                                   Model model) {
         try {
             // Si no recibimos ningún valor como valoración establecemos un 0
-            if (commentForm.getRating() == null)
+            if (commentForm.getRating() == null) {
                 commentForm.setRating(0);
+                logger.debug("Received NULL stars rating, automatically setting to 0");
+            }
             productService.comment(user, commentForm.getProductId(), commentForm.getText(), commentForm.getRating());
             String message = messageSource.getMessage(Constants.PRODUCT_COMMENT_CREATED, new Object[0], locale);
             redirectAttributes.addFlashAttribute(Constants.SUCCESS_MESSAGE, message);

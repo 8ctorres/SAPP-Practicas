@@ -25,9 +25,7 @@ public class HomeController {
     public String doGetHome(Model model, HttpServletResponse response) {
         List<Category> categories = productService.findHighlightedCategories();
         model.addAttribute(Constants.CATEGORIES, categories);
-        if(logger.isDebugEnabled()) {
-            logger.debug(MessageFormat.format("Home categories: {0}", categories));
-        }
+        logger.debug(MessageFormat.format("Home categories: {0}", categories));
         /*
         * La función de CORS se hace ahora en la clase SecurityConfig
         * response.setHeader("Content-Security-Policy",

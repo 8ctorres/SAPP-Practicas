@@ -74,10 +74,8 @@ public class ProductService {
             throws InstanceNotFoundException {
         try {
             Product product = productRepository.findById(productId);
-            if(logger.isDebugEnabled()) {
-                logger.debug(MessageFormat.format("Searching if the user {0} has commented the product {1}", 
+            logger.debug(MessageFormat.format("Searching if the user {0} has commented the product {1}",
                     user.getEmail(), product.getName()));
-            }
             return rateRepository.findByUserAndProduct(user.getUserId(), productId);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -90,10 +88,8 @@ public class ProductService {
         Product product = productRepository.findById(productId);
         try {
             Comment comment = rateRepository.findByUserAndProduct(user.getUserId(), product.getProductId());
-            if(logger.isDebugEnabled()) {
-                logger.debug(MessageFormat.format("{0} has modified his comment of the product {1}", 
+            logger.debug(MessageFormat.format("{0} has modified his comment of the product {1}",
                     user.getName(), product.getName()));
-            }
             product.setTotalScore(product.getTotalScore() - comment.getRating() + rating);
             comment.setRating(rating);
             comment.setText(text);
@@ -101,10 +97,8 @@ public class ProductService {
             productRepository.update(product);
             return rateRepository.update(comment);
         } catch (EmptyResultDataAccessException e) {
-            if(logger.isDebugEnabled()) {
-                logger.debug(MessageFormat.format("{0} created a comment of the product {1}", 
+            logger.debug(MessageFormat.format("{0} created a comment of the product {1}",
                     user.getName(), product.getName()));
-            }
             Comment comment = new Comment();
             comment.setUser(user);
             comment.setProduct(product);

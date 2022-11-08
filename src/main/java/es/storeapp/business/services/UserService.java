@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
@@ -71,9 +72,11 @@ public class UserService {
         *  Además, independientemente de si lo que falla es el username o el password, devolvemos
         *  exactamente el mismo mensaje de error, minimizando la información que damos a un atacante. */
         if (user == null){
+            logger.info(MessageFormat.format("User {0} does not exist", email));
             throw exceptionGenerationUtils.toAuthenticationException(Constants.AUTH_INVALID_LOGIN_MESSAGE);
         }
         if (!BCrypt.checkpw(clearPassword, user.getPassword())) {
+            logger.warn(MessageFormat.format("User {0} trying to log in with wrong password!", email));
             throw exceptionGenerationUtils.toAuthenticationException(Constants.AUTH_INVALID_LOGIN_MESSAGE);
         }
         return user;
@@ -84,7 +87,10 @@ public class UserService {
             throws AuthenticationException, ServiceException {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw exceptionGenerationUtils.toAuthenticationException(Constants.AUTH_INVALID_USER_MESSAGE, email);
+            logger.warn(MessageFormat.format("Tried to recover password for nonexistent user {0}", email));
+            return;
+            // No mostramos información al usuario de si ese correo existe o no. Simplemente si no existe, no hacemos nada
+            //throw exceptionGenerationUtils.toAuthenticationException(Constants.AUTH_INVALID_USER_MESSAGE, email);
         }
         String token = UUID.randomUUID().toString();
 
@@ -120,6 +126,7 @@ public class UserService {
                     new Object[0], locale));
 
             htmlEmail.send();
+            logger.info(MessageFormat.format("Sent password recovery email for user {0}", email));
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
             throw new ServiceException(ex.getMessage());

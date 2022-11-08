@@ -24,9 +24,7 @@ public class ErrorHandlingUtils {
     
     public String handleInvalidFormError(BindingResult result, String template, 
                                          Model model, Locale locale) {
-        if(logger.isErrorEnabled()) {
-            logger.error(result.toString());
-        }
+        logger.error(result.toString());
         String message = messageSource.getMessage(template, new Object[0], locale);
         model.addAttribute(Constants.ERROR_MESSAGE, message);
         return Constants.ERROR_PAGE;

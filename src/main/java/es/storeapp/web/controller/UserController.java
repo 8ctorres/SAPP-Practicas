@@ -73,6 +73,7 @@ public class UserController {
         if (session != null) {
             session.invalidate();
         }
+        logger.info(MessageFormat.format("Session {0} logged out", session.getId()));
         return Constants.SEND_REDIRECT + Constants.ROOT_ENDPOINT;
     }
 
@@ -133,9 +134,7 @@ public class UserController {
         try {
             user = userService.login(loginForm.getEmail(), loginForm.getPassword());
             session.setAttribute(Constants.USER_SESSION, user);
-            if(logger.isDebugEnabled()) {
-                logger.debug(MessageFormat.format("User {0} logged in", user.getEmail()));
-            }
+            logger.info(MessageFormat.format("User {0} logged in", user.getEmail()));
             if (loginForm.getRememberMe() != null && loginForm.getRememberMe()) {
                 Base64.Encoder encoder = Base64.getEncoder();
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -148,9 +147,6 @@ public class UserController {
                 response.addCookie(userCookie);
             }
         } catch (AuthenticationException ex) {
-            if(logger.isDebugEnabled()) {
-                logger.debug(MessageFormat.format("User {0} not logged in ", loginForm.getEmail()));
-            }
             return errorHandlingUtils.handleAuthenticationException(ex, loginForm.getEmail(),
                     Constants.LOGIN_PAGE, model, locale);
         }
@@ -200,9 +196,7 @@ public class UserController {
                     userProfileForm.getPassword(), userProfileForm.getAddress(),
                     userProfileForm.getImage() != null ? userProfileForm.getImage().getOriginalFilename() : null,
                     userProfileForm.getImage() != null ? userProfileForm.getImage().getBytes() : null);
-            if(logger.isDebugEnabled()) {
-                logger.debug(MessageFormat.format("User {0} with name {1} registered", user.getEmail(), user.getName()));
-            }
+            logger.info(MessageFormat.format("User {0} with name {1} registered", user.getEmail(), user.getName()));
             session.setAttribute(Constants.USER_SESSION, user);
             redirectAttributes.addFlashAttribute(Constants.SUCCESS_MESSAGE, messageSource.getMessage(
                     Constants.REGISTRATION_SUCCESS_MESSAGE, new Object[]{user.getName()}, locale));
@@ -233,11 +227,9 @@ public class UserController {
                     userProfileForm.getAddress(),
                     userProfileForm.getImage() != null ? userProfileForm.getImage().getOriginalFilename() : null,
                     userProfileForm.getImage() != null ? userProfileForm.getImage().getBytes() : null);
-            
-            if(logger.isDebugEnabled()) {
-                logger.debug(MessageFormat.format("User {0} with name {1} updated", 
+
+            logger.info(MessageFormat.format("User {0} with name {1} updated",
                         updatedUser.getEmail(), updatedUser.getName()));
-            }
             
             session.setAttribute(Constants.USER_SESSION, updatedUser);
             model.addAttribute(Constants.SUCCESS_MESSAGE, messageSource.getMessage(
@@ -268,6 +260,7 @@ public class UserController {
         User updatedUser;
         try {
             updatedUser = userService.changePassword(user.getUserId(), passwordForm.getOldPassword(), passwordForm.getPassword());
+            logger.info(MessageFormat.format("Updated password for user {0}", user.getEmail()));
             session.setAttribute(Constants.USER_SESSION, updatedUser);
             redirectAttributes.addFlashAttribute(Constants.SUCCESS_MESSAGE, messageSource.getMessage(
                     Constants.PROFILE_UPDATE_SUCCESS, new Object[]{}, locale));
@@ -378,6 +371,7 @@ public class UserController {
                 return Constants.RESET_PASSWORD_PAGE;
             }
             userService.changePassword(passwordForm.getEmail(), passwordForm.getPassword(), passwordForm.getToken());
+            logger.info(MessageFormat.format("User {0} reset password via email token", passwordForm.getEmail()));
             redirectAttributes.addFlashAttribute(Constants.SUCCESS_MESSAGE, messageSource.getMessage(
                     Constants.CHANGE_PASSWORD_SUCCESS, new Object[0], locale));
         } catch (AuthenticationException ex) {

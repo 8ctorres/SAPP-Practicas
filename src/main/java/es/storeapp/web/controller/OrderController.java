@@ -105,9 +105,7 @@ public class OrderController {
                         products.get(0).getCategory().getName(), products.size() - 1}, locale);
             orderForm.setName(orderName);
         }
-        if(logger.isDebugEnabled()) {
-            logger.debug(MessageFormat.format("Go to complete order page {0}", orderForm.getName()));
-        }
+        logger.debug(MessageFormat.format("Go to complete order page {0}", orderForm.getName()));
         model.addAttribute(Constants.ORDER_FORM, orderForm);
         model.addAttribute(Constants.PRODUCTS, products);
         return Constants.ORDER_COMPLETE_PAGE;
@@ -127,6 +125,7 @@ public class OrderController {
         }
         Order order;
         try {
+            logger.debug(MessageFormat.format("Create order {0}", orderForm.getName()));
             order = orderService.create(user, orderForm.getName(), orderForm.getAddress(), orderForm.getPrice(), 
                     Arrays.asList(products));
         } catch (InstanceNotFoundException ex) {
@@ -162,9 +161,14 @@ public class OrderController {
                 CreditCard card = user.getCard();
                 order = orderService.pay(user, id, card.getCard(), card.getCvv(), card.getExpirationMonth(),
                         card.getExpirationYear(), false);
+                logger.info(MessageFormat.format(
+                        "User {0} paying order {1} with default credit card", user.getEmail(), order.getOrderId()));
             } else {
                 order = orderService.pay(user, id, paymentForm.getCreditCard(), paymentForm.getCvv(),
                         paymentForm.getExpirationMonth(), paymentForm.getExpirationYear(), paymentForm.getSave());
+                logger.info(MessageFormat.format(
+                        "User {0} paying order {1} with credit card {2}",
+                        user.getEmail(), order.getOrderId().toString(), paymentForm.getCreditCard()));
                 if(paymentForm.getSave()) {
                     session.setAttribute(Constants.USER_SESSION, user);
                 }   
@@ -187,6 +191,7 @@ public class OrderController {
         Order order;
         try {
             order = orderService.cancel(user, id);
+            logger.info(MessageFormat.format("User {0} canceling order ID {1}", user.getEmail(), order.getOrderId().toString()));
         } catch (InstanceNotFoundException ex) {
             return errorHandlingUtils.handleInstanceNotFoundException(ex, model, locale);
         }

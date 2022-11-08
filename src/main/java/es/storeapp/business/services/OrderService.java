@@ -71,9 +71,7 @@ public class OrderService {
         throws InstanceNotFoundException, InvalidStateException {
         Order order = orderRepository.findById(orderId);
         if(order.getState() != OrderState.PENDING) {
-            if(logger.isWarnEnabled()) {
-                logger.warn(MessageFormat.format("Trying to pay the order {0}", order));
-            }
+            logger.info(MessageFormat.format("Trying to pay the order {0}", order));
             throw exceptionGenerationUtils.toInvalidStateException(Constants.INVALID_STATE_EXCEPTION_MESSAGE);
         }
         order.setState(OrderState.COMPLETED);
@@ -103,9 +101,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public List<Order> findByUserById(Long userId) throws InstanceNotFoundException {
         User user = userRepository.findById(userId);
-        if(logger.isDebugEnabled()) {
-            logger.debug(MessageFormat.format("Searching the orders of the user {0}", user.getEmail()));
-        }
+        logger.debug(MessageFormat.format("Searching the orders of the user {0}", user.getEmail()));
         return orderRepository.findByUserId(userId);
     }
 
@@ -117,10 +113,8 @@ public class OrderService {
     @Transactional(readOnly = true)
     public boolean findIfUserBuyProduct(Long userId, Long productId) throws InstanceNotFoundException {
         User user = userRepository.findById(userId);
-        if(logger.isDebugEnabled()) {
-            logger.debug(MessageFormat.format("Checking if user {0} buy the product {1}", 
+        logger.debug(MessageFormat.format("Checking if user {0} buy the product {1}",
                 user.getEmail(), productId));
-        }
         return orderLineRepository.findIfUserBuyProduct(userId, productId);
     }
     

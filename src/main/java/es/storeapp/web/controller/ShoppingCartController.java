@@ -52,9 +52,7 @@ public class ShoppingCartController {
         try {
             product = productService.findProductById(id);
             List<Product> products = shoppingCart.getProducts();
-            if(logger.isDebugEnabled()) {
-                logger.debug(MessageFormat.format("Adding product {0} to shopping cart", id));
-            }
+            logger.debug(MessageFormat.format("Adding product {0} to shopping cart", id));
             for (Product p : products) {
                 if (p.getProductId().equals(id)) {
                     String message = messageSource.getMessage(Constants.PRODUCT_ALREADY_IN_SHOPPING_CART,
@@ -84,6 +82,7 @@ public class ShoppingCartController {
         try {
             product = productService.findProductById(id);
             List<Product> products = shoppingCart.getProducts();
+            logger.debug(MessageFormat.format("Removing product {0} from shopping cart", id));
             for (Product p : products) {
                 if (p.getProductId().equals(id)) {
                     String message = messageSource.getMessage(Constants.PRODUCT_REMOVED_FROM_THE_SHOPPING_CART,

@@ -17,10 +17,8 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter{
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
         throws Exception {
 
-        if(logger.isDebugEnabled()) {
-            logger.debug(MessageFormat.format("Request URL: {0} started at {1}", 
+        logger.trace(MessageFormat.format("Request URL: {0} started at {1}",
                 request.getRequestURL(), LocalDateTime.now()));
-        }
 
         return true;
     }
@@ -29,18 +27,15 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter{
     public void postHandle(HttpServletRequest request, HttpServletResponse response,
                            Object handler, ModelAndView modelAndView) throws Exception {
 
-        if(logger.isDebugEnabled()) {
-            logger.debug(MessageFormat.format("Request URL: {0} finished at {1}", 
+        logger.trace(MessageFormat.format("Request URL: {0} finished at {1}",
                 request.getRequestURL(), LocalDateTime.now()));
-        }
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, 
                                 Object handler, Exception ex) throws Exception {
-        if(logger.isDebugEnabled()) {
-            logger.debug(MessageFormat.format("After completion URL: {0} finished at {1}", 
+        logger.trace(MessageFormat.format("After completion URL: {0} finished at {1}",
                 request.getRequestURL(), LocalDateTime.now()));
-        }    }
+    }
 
 }
