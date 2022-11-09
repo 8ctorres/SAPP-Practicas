@@ -144,6 +144,8 @@ public class UserController {
                 Cookie userCookie = new Cookie(Constants.PERSISTENT_USER_COOKIE,
                         new String(encoder.encode(buffer.toByteArray())));
                 userCookie.setMaxAge(604800); // 1 week
+                userCookie.setHttpOnly(true);
+                userCookie.setSecure(true);
                 response.addCookie(userCookie);
             }
         } catch (AuthenticationException ex) {

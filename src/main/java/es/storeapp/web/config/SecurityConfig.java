@@ -61,6 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/Scripts.js").permitAll()
                 .antMatchers(HttpMethod.GET, "/Styles.css").permitAll()
                 .anyRequest().denyAll()
+                .and()
+                .sessionManagement().sessionFixation().migrateSession()
                 .and().headers().xssProtection()
                 .and().contentSecurityPolicy("default-src 'self'; " +
                         "script-src 'self' 'unsafe-inline'; " +
