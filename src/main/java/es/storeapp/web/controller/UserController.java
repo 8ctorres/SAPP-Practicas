@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -51,10 +52,10 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     ErrorHandlingUtils errorHandlingUtils;
-    
+
     @GetMapping(Constants.LOGIN_ENDPOINT)
     public String doGetLoginPage(Model model) {
         model.addAttribute(Constants.LOGIN_FORM, new LoginForm());
@@ -62,7 +63,7 @@ public class UserController {
     }
 
     @GetMapping(Constants.LOGOUT_ENDPOINT)
-    public String doLogout(HttpSession session, 
+    public String doLogout(HttpSession session,
                            HttpServletResponse response,
                            @CookieValue(value = Constants.PERSISTENT_USER_COOKIE, required = false) String userInfo) {
         if (userInfo != null) {
@@ -114,7 +115,7 @@ public class UserController {
         model.addAttribute(Constants.RESET_PASSWORD_FORM, form);
         return Constants.RESET_PASSWORD_PAGE;
     }
-    
+
     @PostMapping(Constants.LOGIN_ENDPOINT)
     public String doLogin(@Valid @ModelAttribute LoginForm loginForm,
                           BindingResult result,
@@ -141,12 +142,8 @@ public class UserController {
                 try (XMLEncoder xmlEncoder = new XMLEncoder(buffer);) {
                     xmlEncoder.writeObject(new UserInfo(user.getEmail(), user.getPassword()));
                 }
-                Cookie userCookie = new Cookie(Constants.PERSISTENT_USER_COOKIE,
-                        new String(encoder.encode(buffer.toByteArray())));
-                userCookie.setMaxAge(604800); // 1 week
-                userCookie.setHttpOnly(true);
-                userCookie.setSecure(true);
-                response.addCookie(userCookie);
+                String cookieValue = new String(encoder.encode(buffer.toByteArray()));
+                response.setHeader(HttpHeaders.SET_COOKIE, PERSISTENT_USER_COOKIE + "=" + cookieValue + "; HttpOnly; Secure; Max-Age=604800; SameSite=Strict");
             }
         } catch (AuthenticationException ex) {
             return errorHandlingUtils.handleAuthenticationException(ex, loginForm.getEmail(),
@@ -185,10 +182,10 @@ public class UserController {
                              BindingResult result,
                              RedirectAttributes redirectAttributes,
                              HttpSession session,
-                             Locale locale, 
+                             Locale locale,
                              Model model) {
         if (result.hasErrors()) {
-            errorHandlingUtils.handleInvalidFormError(result, 
+            errorHandlingUtils.handleInvalidFormError(result,
                 Constants.REGISTRATION_INVALID_PARAMS_MESSAGE, model, locale);
             return Constants.USER_PROFILE_PAGE;
         }
@@ -214,12 +211,12 @@ public class UserController {
     @PostMapping(Constants.USER_PROFILE_ENDPOINT)
     public String doUpdateProfile(@Valid @ModelAttribute(Constants.USER_PROFILE_FORM) UserProfileForm userProfileForm,
                                   BindingResult result,
-                                  @SessionAttribute(Constants.USER_SESSION) User user,            
+                                  @SessionAttribute(Constants.USER_SESSION) User user,
                                   HttpSession session,
-                                  Locale locale, 
+                                  Locale locale,
                                   Model model) {
         if (result.hasErrors()) {
-            errorHandlingUtils.handleInvalidFormError(result, 
+            errorHandlingUtils.handleInvalidFormError(result,
                 Constants.UPDATE_PROFILE_INVALID_PARAMS_MESSAGE, model, locale);
             return Constants.USER_PROFILE_PAGE;
         }
@@ -232,7 +229,7 @@ public class UserController {
 
             logger.info(MessageFormat.format("User {0} with name {1} updated",
                         updatedUser.getEmail(), updatedUser.getName()));
-            
+
             session.setAttribute(Constants.USER_SESSION, updatedUser);
             model.addAttribute(Constants.SUCCESS_MESSAGE, messageSource.getMessage(
                     Constants.PROFILE_UPDATE_SUCCESS, new Object[]{}, locale));
@@ -252,11 +249,11 @@ public class UserController {
                                    @SessionAttribute(Constants.USER_SESSION) User user,
                                    HttpSession session,
                                    RedirectAttributes redirectAttributes,
-                                   Locale locale, 
+                                   Locale locale,
                                    Model model) {
-        if (result.hasErrors()) {       
-            errorHandlingUtils.handleInvalidFormError(result, 
-                Constants.CHANGE_PASSWORD_INVALID_PARAMS_MESSAGE, model, locale);            
+        if (result.hasErrors()) {
+            errorHandlingUtils.handleInvalidFormError(result,
+                Constants.CHANGE_PASSWORD_INVALID_PARAMS_MESSAGE, model, locale);
             return Constants.PASSWORD_PAGE;
         }
         User updatedUser;
@@ -269,7 +266,7 @@ public class UserController {
         } catch (InstanceNotFoundException ex) {
             return errorHandlingUtils.handleInstanceNotFoundException(ex, model, locale);
         } catch (AuthenticationException ex) {
-            return errorHandlingUtils.handleAuthenticationException(ex, user.getEmail(), 
+            return errorHandlingUtils.handleAuthenticationException(ex, user.getEmail(),
                     Constants.PASSWORD_PAGE, model, locale);
         }
         return Constants.SEND_REDIRECT + Constants.ROOT_ENDPOINT;
@@ -278,14 +275,14 @@ public class UserController {
     @GetMapping(Constants.USER_PROFILE_IMAGE_ENDPOINT)
     public ResponseEntity<byte[]> doGetProfileImage(@SessionAttribute(Constants.USER_SESSION) User user,
                                                     HttpServletResponse response,
-                                                    Locale locale, 
+                                                    Locale locale,
                                                     Model model) {
         try {
-            
+
             response.setHeader(Constants.CONTENT_TYPE_HEADER, MediaType.APPLICATION_OCTET_STREAM_VALUE);
             response.setHeader(Constants.CONTENT_DISPOSITION_HEADER,
                     MessageFormat.format(Constants.CONTENT_DISPOSITION_HEADER_VALUE, user.getEmail(), user.getImage()));
-            
+
             byte[] contents = userService.getImage(user.getUserId());
             if (contents == null) {
                 String message = messageSource.getMessage(Constants.INVALID_PROFILE_IMAGE_MESSAGE,
@@ -309,7 +306,7 @@ public class UserController {
     public String doRemoveProfileImage(@SessionAttribute(Constants.USER_SESSION) User user,
                                        HttpSession session,
                                        RedirectAttributes redirectAttributes,
-                                       Locale locale, 
+                                       Locale locale,
                                        Model model) {
 
         User updatedUser;
@@ -330,7 +327,7 @@ public class UserController {
     public String doSendEmail(@RequestParam(Constants.EMAIL_PARAM) String email,
                               RedirectAttributes redirectAttributes,
                               HttpServletRequest request,
-                              Locale locale, 
+                              Locale locale,
                               Model model) {
         try {
             if(email == null || email.trim().length() == 0) {
@@ -338,37 +335,37 @@ public class UserController {
                 model.addAttribute(Constants.ERROR_MESSAGE, message);
                 return Constants.SEND_EMAIL_PAGE;
             }
-            
+
             String scheme = request.getScheme();
             String serverName = request.getServerName();
             Integer portNumber = request.getServerPort();
             String contextPath = request.getContextPath();
-            
-            userService.sendResetPasswordEmail(email, MessageFormat.format(Constants.URL_FORMAT, scheme, 
+
+            userService.sendResetPasswordEmail(email, MessageFormat.format(Constants.URL_FORMAT, scheme,
                     serverName, portNumber.toString(), contextPath, Constants.RESET_PASSWORD_ENDPOINT), locale);
-            
+
             redirectAttributes.addFlashAttribute(Constants.SUCCESS_MESSAGE, messageSource.getMessage(
                     Constants.MAIL_SUCCESS_MESSAGE, new Object[] { email }, locale));
-            
+
         } catch (AuthenticationException ex) {
-            return errorHandlingUtils.handleAuthenticationException(ex, email, 
+            return errorHandlingUtils.handleAuthenticationException(ex, email,
                     Constants.SEND_EMAIL_PAGE, model, locale);
         } catch (Exception ex) {
             return errorHandlingUtils.handleUnexpectedException(ex, model);
         }
         return Constants.SEND_REDIRECT + Constants.SEND_EMAIL_ENDPOINT;
     }
-    
+
     @PostMapping(Constants.RESET_PASSWORD_ENDPOINT)
     public String doResetPassword(@Valid @ModelAttribute(Constants.RESET_PASSWORD_FORM) ResetPasswordForm passwordForm,
                                   BindingResult result,
                                   RedirectAttributes redirectAttributes,
                                   HttpServletRequest request,
-                                  Locale locale, 
+                                  Locale locale,
                                   Model model) {
         try {
             if (result.hasErrors()) {
-                errorHandlingUtils.handleInvalidFormError(result, 
+                errorHandlingUtils.handleInvalidFormError(result,
                     Constants.RESET_PASSWORD_INVALID_PARAMS_MESSAGE, model, locale);
                 return Constants.RESET_PASSWORD_PAGE;
             }
@@ -377,7 +374,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute(Constants.SUCCESS_MESSAGE, messageSource.getMessage(
                     Constants.CHANGE_PASSWORD_SUCCESS, new Object[0], locale));
         } catch (AuthenticationException ex) {
-            return errorHandlingUtils.handleAuthenticationException(ex, passwordForm.getEmail(), 
+            return errorHandlingUtils.handleAuthenticationException(ex, passwordForm.getEmail(),
                     Constants.SEND_EMAIL_PAGE, model, locale);
         } catch (Exception ex) {
             return errorHandlingUtils.handleUnexpectedException(ex, model);
