@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/sendEmail").permitAll()
                 .antMatchers(HttpMethod.POST, "/sendEmail").permitAll()
                 .antMatchers(HttpMethod.GET, "/cart").permitAll()
-                .antMatchers(HttpMethod.GET, "/resources/1/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/resources/{^[\\d]$}/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/fonts/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/webjars/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/Scripts.js").permitAll()

@@ -38,6 +38,7 @@
 
                      <form th:object="${userProfileForm}" class="form-horizontal" method="POST" 
                            enctype="multipart/form-data">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                         <div class="form-group row">
                            <label for="name" class="col-3 text-right input-label-middle"
                                   th:text="#{profile.input.name}"></label>
