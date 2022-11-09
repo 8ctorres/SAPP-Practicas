@@ -4,6 +4,7 @@ crashlytics-build.properties
 fabric.properties
 
 out/
+*.iml
 *.iws
 .idea/
 work/
