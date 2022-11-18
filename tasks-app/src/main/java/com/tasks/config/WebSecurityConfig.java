@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -34,13 +35,39 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        
-        http.authorizeRequests()
-            .antMatchers(HttpMethod.GET,  "/swagger-ui.html").permitAll()
-            .antMatchers(HttpMethod.GET,  "/swagger-resources/**").permitAll()
-            .antMatchers(HttpMethod.GET,  "/v2/api-docs").permitAll()
-            .anyRequest().permitAll();
+
+        http.cors().and().csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .addFilter(new JwtAuthorizationFilter(tokenProvider, authenticationManager()))
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET,  "/swagger-ui.html").permitAll()
+                .antMatchers(HttpMethod.GET,  "/swagger-resources/**").permitAll()
+                .antMatchers(HttpMethod.GET,  "/v2/api-docs").permitAll()
+                .antMatchers(HttpMethod.GET,  "/webjars/**").permitAll()
+                .antMatchers(HttpMethod.GET,  "/javascript-libs/**").permitAll()
+                .antMatchers(HttpMethod.GET,  "/css/**").permitAll()
+                .antMatchers(HttpMethod.GET,  "/react-libs/**").permitAll()
+                .antMatchers(HttpMethod.GET,  "/application/**").permitAll()
+                .antMatchers(HttpMethod.POST,  "/api/login").permitAll()
+                .antMatchers(HttpMethod.GET,  "/dashboard/").permitAll()
+                .antMatchers(HttpMethod.GET,  "/dashboard/*").permitAll()
+                .antMatchers(HttpMethod.GET,  "/api/users").permitAll()
+                .antMatchers(HttpMethod.GET,  "/api/projects").permitAll()
+                .antMatchers(HttpMethod.POST,  "/api/projects").permitAll()
+                .antMatchers(HttpMethod.GET,  "/api/projects/*").permitAll()
+                .antMatchers(HttpMethod.PUT,  "/api/projects/*").permitAll()
+                .antMatchers(HttpMethod.DELETE,  "/api/projects/*").permitAll()
+                .antMatchers(HttpMethod.GET,  "/api/projects/*/tasks").permitAll()
+                .antMatchers(HttpMethod.GET,  "/api/comments").permitAll()
+                .antMatchers(HttpMethod.GET,  "/api/comments/*").permitAll()
+                .antMatchers(HttpMethod.GET,  "/api/tasks").permitAll()
+                .antMatchers(HttpMethod.GET,  "/api/tasks/*").permitAll()
+                .antMatchers(HttpMethod.PUT,  "/api/tasks/*").permitAll()
+                .antMatchers(HttpMethod.DELETE,  "/api/tasks/*").permitAll()
+                .antMatchers(HttpMethod.POST,  "/api/tasks/*/changeProgress").permitAll()
+                .antMatchers(HttpMethod.POST,  "/api/tasks/*/changeResolution").permitAll()
+                .antMatchers(HttpMethod.POST,  "/api/tasks/*/changeState").permitAll()
+                .anyRequest().denyAll();
     }
 
     @Bean
