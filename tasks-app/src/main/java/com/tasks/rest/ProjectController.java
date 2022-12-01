@@ -6,6 +6,7 @@ import com.tasks.business.entities.Project;
 import com.tasks.business.entities.Task;
 import com.tasks.business.exceptions.DuplicatedResourceException;
 import com.tasks.business.exceptions.InstanceNotFoundException;
+import com.tasks.business.exceptions.NotAllowedException;
 import com.tasks.rest.dto.ProjectDto;
 import com.tasks.rest.json.ErrorDetailsResponse;
 import io.swagger.annotations.Api;
@@ -78,9 +79,9 @@ public class ProjectController {
         @ApiResponse(code = 409, message = "The project already exists", response = ErrorDetailsResponse.class)
     })
     @RequestMapping(value = "/projects/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<?> doUpdateProject(@PathVariable("id") Long id, @RequestBody ProjectDto project) 
-        throws InstanceNotFoundException, DuplicatedResourceException {        
-        Project updatedProject = projectService.update(id, project.getName(), project.getDescription());
+    public ResponseEntity<?> doUpdateProject(Principal principal, @PathVariable("id") Long id, @RequestBody ProjectDto project)
+            throws InstanceNotFoundException, DuplicatedResourceException, NotAllowedException {
+        Project updatedProject = projectService.update(id, project.getName(), project.getDescription(), principal.getName());
         return ResponseEntity.ok(updatedProject);
     }
 
@@ -90,8 +91,8 @@ public class ProjectController {
         @ApiResponse(code = 404, message = "The task does not exist", response = ErrorDetailsResponse.class)
     })
     @RequestMapping(value = "/projects/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> doRemoveProjectById(@PathVariable("id") Long id) throws InstanceNotFoundException {
-        projectService.removeById(id);
+    public ResponseEntity<?> doRemoveProjectById(Principal principal, @PathVariable("id") Long id) throws InstanceNotFoundException, NotAllowedException {
+        projectService.removeById(id, principal.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     

@@ -4,6 +4,7 @@ import com.tasks.business.entities.Project;
 import com.tasks.business.entities.User;
 import com.tasks.business.exceptions.DuplicatedResourceException;
 import com.tasks.business.exceptions.InstanceNotFoundException;
+import com.tasks.business.exceptions.NotAllowedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.tasks.business.repository.ProjectsRepository;
@@ -44,8 +45,8 @@ public class ProjectService {
     }
 
     @Transactional
-    public Project update(Long projectId, String name, String description) 
-            throws DuplicatedResourceException, InstanceNotFoundException {
+    public Project update(Long projectId, String name, String description, String username)
+            throws DuplicatedResourceException, InstanceNotFoundException, NotAllowedException {
         Optional<Project> project = projectsRepository.findById(projectId);
         if(!project.isPresent()) {
             throw new InstanceNotFoundException(projectId, "Project", 
@@ -56,6 +57,10 @@ public class ProjectService {
             throw new DuplicatedResourceException("Project", name, 
                 MessageFormat.format("Project ''{0}'' already exists", name));
         }
+        if (!project.get().getAdmin().getUsername().equals(username)) {
+            throw new NotAllowedException(projectId, "Project",
+                    MessageFormat.format("Project {0} doesnt bellow to this user", projectId));
+        }
         project.get().setName(name);
         project.get().setDescription(description);
         project.get().setTimestamp(System.currentTimeMillis());
@@ -63,10 +68,14 @@ public class ProjectService {
     }
     
     @Transactional()
-    public void removeById(Long id) throws InstanceNotFoundException {
+    public void removeById(Long id, String username) throws InstanceNotFoundException, NotAllowedException {
         Optional<Project> optTask = projectsRepository.findById(id);
         if(!optTask.isPresent()) {
             throw new InstanceNotFoundException(id, "Project" , MessageFormat.format("Project {0} does not exist", id));
+        }
+        if (!optTask.get().getAdmin().getUsername().equals(username)) {
+            throw new NotAllowedException(id, "Project",
+                    MessageFormat.format("Project {0} doesnt bellow to this user", id));
         }
         projectsRepository.delete(optTask.get());
     }

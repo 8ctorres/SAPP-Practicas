@@ -10,6 +10,7 @@ import com.tasks.business.entities.User;
 import com.tasks.business.exceptions.DuplicatedResourceException;
 import com.tasks.business.exceptions.InalidStateException;
 import com.tasks.business.exceptions.InstanceNotFoundException;
+import com.tasks.business.exceptions.NotAllowedException;
 import com.tasks.business.repository.CommentsRepository;
 import com.tasks.business.repository.ProjectsRepository;
 import com.tasks.business.repository.TasksRepository;
@@ -38,8 +39,8 @@ public class TasksService {
     private ProjectsRepository projectsRepository;
     
     @Transactional
-    public Task create(String name, String description, String type, String username, Long projectId) 
-            throws DuplicatedResourceException, InstanceNotFoundException {
+    public Task create(String name, String description, String type, String username, Long projectId, String admin)
+            throws DuplicatedResourceException, InstanceNotFoundException, NotAllowedException {
         Optional<User> user = userRepository.findById(username);
         if(!user.isPresent()) {
             throw new UsernameNotFoundException(MessageFormat.format("User {0} does not exist", username));
@@ -52,6 +53,10 @@ public class TasksService {
         if(tasksRepository.findByName(name) != null) {
             throw new DuplicatedResourceException("Task", name, 
                 MessageFormat.format("Task ''{0}'' already exists", name));
+        }
+        if (!project.get().getAdmin().getUsername().equals(admin)) {
+            throw new NotAllowedException(projectId, "Project",
+                    MessageFormat.format("Project {0} doesn´t bellow to this user", projectId));
         }
         
         Project projectToUpdate = project.get();
@@ -72,8 +77,8 @@ public class TasksService {
     }
     
     @Transactional
-    public Task update(Long id, String name, String description, String type, String username, Long projectId) 
-        throws InstanceNotFoundException, InalidStateException, DuplicatedResourceException {
+    public Task update(Long id, String name, String description, String type, String username, Long projectId, String adminName)
+            throws InstanceNotFoundException, InalidStateException, DuplicatedResourceException, NotAllowedException {
         Optional<User> user = userRepository.findById(username);
         if(!user.isPresent()) {
             throw new UsernameNotFoundException(MessageFormat.format("User {0} does not exist", username));
@@ -86,6 +91,10 @@ public class TasksService {
         Optional<Task> task = tasksRepository.findById(id);
         if(!task.isPresent()) {
             throw new InstanceNotFoundException(id, "Task" , MessageFormat.format("Task {0} does not exist", id));
+        }
+        if (!project.get().getAdmin().getUsername().equals(adminName)) {
+            throw new NotAllowedException(id, "Task",
+                    MessageFormat.format("Task {0} doesnt bellow to this user", projectId));
         }
         Task anotherTask = tasksRepository.findByName(name);
         if(anotherTask != null && !Objects.equals(anotherTask.getTaskId(), id)) {
@@ -115,8 +124,8 @@ public class TasksService {
     }    
 
     @Transactional
-    public Task changeResolution(Long id, TaskResolution resolution) 
-            throws InstanceNotFoundException, InalidStateException {
+    public Task changeResolution(Long id, TaskResolution resolution, String username)
+            throws InstanceNotFoundException, InalidStateException, NotAllowedException {
         Optional<Task> optTask = tasksRepository.findById(id);
         if(!optTask.isPresent()) {
             throw new InstanceNotFoundException(id, "Task" , MessageFormat.format("Task {0} does not exist", id));
@@ -130,13 +139,17 @@ public class TasksService {
     }
     
     @Transactional
-    public Task changeProgress(Long id, byte progress) 
-            throws InstanceNotFoundException, InalidStateException {
+    public Task changeProgress(Long id, byte progress, String username)
+            throws InstanceNotFoundException, InalidStateException, NotAllowedException {
         Optional<Task> optTask = tasksRepository.findById(id);
         if(!optTask.isPresent()) {
             throw new InstanceNotFoundException(id, "Task" , MessageFormat.format("Task {0} does not exist", id));
         }
         Task task = optTask.get();
+        if (!task.getOwner().getUsername().equals(username)) {
+            throw new NotAllowedException(id, "Task",
+                    MessageFormat.format("Task {0} doesnt bellow to this user", id));
+        }
         if(task.getState().equals(TaskState.CLOSED)) {
             throw new InalidStateException("Task " + task.getName() + " is closed.");
         }

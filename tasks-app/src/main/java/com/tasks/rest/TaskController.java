@@ -9,6 +9,7 @@ import com.tasks.business.entities.TaskState;
 import com.tasks.business.exceptions.DuplicatedResourceException;
 import com.tasks.business.exceptions.InalidStateException;
 import com.tasks.business.exceptions.InstanceNotFoundException;
+import com.tasks.business.exceptions.NotAllowedException;
 import com.tasks.rest.dto.CommentDto;
 import com.tasks.rest.dto.TaskDto;
 import com.tasks.rest.json.ErrorDetailsResponse;
@@ -66,10 +67,10 @@ public class TaskController {
         @ApiResponse(code = 409, message = "The task already exists", response = ErrorDetailsResponse.class)
     })
     @RequestMapping(value = "/tasks", method = RequestMethod.POST)
-    public ResponseEntity<?> doCreateTask(@RequestBody TaskDto task) 
-            throws DuplicatedResourceException, InstanceNotFoundException {
+    public ResponseEntity<?> doCreateTask(Principal principal, @RequestBody TaskDto task)
+            throws DuplicatedResourceException, InstanceNotFoundException, NotAllowedException {
         Task newTask = tasksService.create(task.getName(), task.getDescription(),
-                task.getType(), task.getOwner(), task.getProject());
+                task.getType(), task.getOwner(), task.getProject(), principal.getName());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(newTask.getTaskId()).toUri();
         return ResponseEntity.created(location).body(newTask);
@@ -82,10 +83,10 @@ public class TaskController {
         @ApiResponse(code = 409, message = "The task already exists", response = ErrorDetailsResponse.class)
     })
     @RequestMapping(value = "/tasks/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<?> doUpdateTask(@PathVariable("id") Long id, @RequestBody TaskDto task) 
-        throws InstanceNotFoundException, InalidStateException, DuplicatedResourceException {        
+    public ResponseEntity<?> doUpdateTask(Principal principal, @PathVariable("id") Long id, @RequestBody TaskDto task)
+            throws InstanceNotFoundException, InalidStateException, DuplicatedResourceException, NotAllowedException {
         Task updatedTask = tasksService.update(id, task.getName(), task.getDescription(),
-            task.getType(), task.getOwner(), task.getProject());
+            task.getType(), task.getOwner(), task.getProject(), principal.getName());
         return ResponseEntity.ok(updatedTask);
     }
     
@@ -119,10 +120,10 @@ public class TaskController {
         @ApiResponse(code = 404, message = "The task does not exist", response = ErrorDetailsResponse.class)
     })
     @RequestMapping(value = "/tasks/{id}/changeResolution", method = RequestMethod.POST)
-    public ResponseEntity<?> doChangeTaskResolution(@PathVariable("id") Long id,
-                                                    @RequestBody(required = true) TextNode resolution) 
-        throws InstanceNotFoundException, InalidStateException {        
-        Task task = tasksService.changeResolution(id, TaskResolution.valueOf(resolution.asText()));
+    public ResponseEntity<?> doChangeTaskResolution(Principal principal, @PathVariable("id") Long id,
+                                                    @RequestBody(required = true) TextNode resolution)
+            throws InstanceNotFoundException, InalidStateException, NotAllowedException {
+        Task task = tasksService.changeResolution(id, TaskResolution.valueOf(resolution.asText()), principal.getName());
         return ResponseEntity.ok(task);
     }
     @ApiOperation(value = "Change task progess by id", authorizations = {@Authorization(value = "Bearer")})
@@ -131,10 +132,10 @@ public class TaskController {
         @ApiResponse(code = 404, message = "The task does not exist", response = ErrorDetailsResponse.class)
     })
     @RequestMapping(value = "/tasks/{id}/changeProgress", method = RequestMethod.POST)
-    public ResponseEntity<?> doChangeTaskProgress(@PathVariable("id") Long id,
-                                                  @RequestBody(required = true) TextNode progress) 
-        throws InstanceNotFoundException, InalidStateException {        
-        Task task = tasksService.changeProgress(id, (byte) progress.asInt());
+    public ResponseEntity<?> doChangeTaskProgress(Principal principal, @PathVariable("id") Long id,
+                                                  @RequestBody(required = true) TextNode progress)
+            throws InstanceNotFoundException, InalidStateException, NotAllowedException {
+        Task task = tasksService.changeProgress(id, (byte) progress.asInt(), principal.getName());
         return ResponseEntity.ok(task);
     }
 

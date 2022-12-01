@@ -58,15 +58,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT,  "/api/projects/*").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE,  "/api/projects/*").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET,  "/api/projects/*/tasks").hasRole("USER")
-                .antMatchers(HttpMethod.POST,  "/api/comments").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST,  "/api/comments").hasRole("USER")
                 .antMatchers(HttpMethod.GET,  "/api/comments/*").hasRole("USER")
                 .antMatchers(HttpMethod.GET,  "/api/tasks").permitAll()
                 .antMatchers(HttpMethod.POST,  "/api/tasks").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET,  "/api/tasks/*").hasRole("USER")
                 .antMatchers(HttpMethod.PUT,  "/api/tasks/*").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE,  "/api/tasks/*").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST,  "/api/tasks/*/changeProgress").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST,  "/api/tasks/*/changeResolution").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST,  "/api/tasks/*/changeProgress").hasRole("USER")
+                .antMatchers(HttpMethod.POST,  "/api/tasks/*/changeResolution").hasRole("USER")
                 .antMatchers(HttpMethod.POST,  "/api/tasks/*/changeState").hasRole("ADMIN")
                 .anyRequest().denyAll();
     }
