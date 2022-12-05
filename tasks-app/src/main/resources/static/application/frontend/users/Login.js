@@ -26,6 +26,7 @@ var Login = (props) => {
         }, onSuccess);
     };
     const handleSSO = () => {
+        window.location.replace("http://localhost:7777/oauth-server/oauth/authorize?response_type=token&client_id=tasks_app&redirect_uri=http://localhost:8888/tasks-service/dashboard/loginOAuth")
     };
     return (
         <div className="row w-100">
