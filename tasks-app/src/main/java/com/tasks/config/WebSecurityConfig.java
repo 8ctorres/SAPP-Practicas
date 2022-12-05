@@ -31,6 +31,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Override
     public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers(HttpMethod.GET,  "/swagger-ui.html")
+                .antMatchers(HttpMethod.GET,  "/webjars/**")
+                .antMatchers(HttpMethod.GET,  "/javascript-libs/**")
+                .antMatchers(HttpMethod.GET,  "/css/**")
+                .antMatchers(HttpMethod.GET,  "/react-libs/**")
+                .antMatchers(HttpMethod.GET,  "/application/**");
     }
 
     @Override
@@ -43,11 +49,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,  "/swagger-ui.html").permitAll()
                 .antMatchers(HttpMethod.GET,  "/swagger-resources/**").permitAll()
                 .antMatchers(HttpMethod.GET,  "/v2/api-docs").permitAll()
-                .antMatchers(HttpMethod.GET,  "/webjars/**").permitAll()
-                .antMatchers(HttpMethod.GET,  "/javascript-libs/**").permitAll()
-                .antMatchers(HttpMethod.GET,  "/css/**").permitAll()
-                .antMatchers(HttpMethod.GET,  "/react-libs/**").permitAll()
-                .antMatchers(HttpMethod.GET,  "/application/**").permitAll()
                 .antMatchers(HttpMethod.POST,  "/api/login").permitAll()
                 .antMatchers(HttpMethod.GET,  "/dashboard/").permitAll()
                 .antMatchers(HttpMethod.GET,  "/dashboard/*").permitAll()
